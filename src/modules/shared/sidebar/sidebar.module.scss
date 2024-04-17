@@ -1,0 +1,93 @@
+@import '@/assets/scss/_variables.scss';
+@import '@/assets/scss/rules.scss';
+
+.sider {
+
+    .container {
+        .inner {
+            height: 100vh;
+    
+            .brand {
+                // @include flex-variant(start, center, row);
+                padding: 2.4rem 2.8rem;
+
+                &.collapsed {
+                    padding: 2.4rem 2.2rem;
+
+                    svg g {
+                        display: none !important;
+                    }
+                }
+            }
+    
+            .user {
+                ul li > div {
+                    @include flex-variant(start, center, row);
+                }
+    
+                ul li div span {
+                    font-weight: 500;
+                }
+
+                .user-collapsed {
+
+                    :global {
+                        .ant-menu-submenu-title {
+                            padding: 0;
+                            justify-content: center;
+
+                            .ant-menu-title-content {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+            }
+    
+            .menu {
+                flex: 2;
+
+                .menu-layout {
+                    height: calc(100vh - 127px);
+                    overflow-x: hidden;
+                    overflow-y: auto;
+
+                    &:hover::-webkit-scrollbar-thumb {
+                        background-color: #9da5b1;
+                    }
+                
+                    &::-webkit-scrollbar {
+                        width: 10px;
+                        height: 10px;
+                    }
+                
+                    &::-webkit-scrollbar-corner {
+                        background-color: transparent;
+                    }
+                
+                    &::-webkit-scrollbar-thumb {
+                        background-color: transparent;
+                        border: 2px solid transparent;
+                        background-clip: padding-box;
+                        border-radius: 6px;
+                        transition: cubic-bezier(0.165, 0.84, 0.44, 1);
+                    }
+
+                }
+    
+                ul li span {
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
+
+.avatar {
+    img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+}

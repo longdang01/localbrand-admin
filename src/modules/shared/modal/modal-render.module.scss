@@ -1,0 +1,25 @@
+.modal-content {
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &:hover::-webkit-scrollbar-thumb {
+        background-color: #9da5b1;
+    }
+
+    &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        border-radius: 6px;
+        transition: cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+}

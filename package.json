@@ -1,5 +1,5 @@
 {
-  "name": "ke-frontend",
+  "name": "v-osint3-plus-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -15,14 +15,19 @@
     "antd": "^5.11.1",
     "axios": "^1.6.2",
     "dayjs": "^1.11.10",
+    "framer-motion": "^11.1.0",
+    "i18next": "^23.11.1",
     "i18next-browser-languagedetector": "^7.2.0",
+    "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-i18next": "^13.4.1",
     "react-icons": "^4.12.0",
     "react-query": "^3.39.3",
+    "react-responsive": "^10.0.0",
     "react-router-dom": "^6.18.0",
+    "vite-plugin-svgr": "^4.2.0",
     "zustand": "^4.4.6"
   },
   "devDependencies": {

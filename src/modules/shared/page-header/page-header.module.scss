@@ -1,0 +1,61 @@
+@import '@/assets/scss/_variables.scss';
+@import '@/assets/scss/rules.scss';
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 130px;
+    padding: 24px;
+
+    &.isContainTitle {
+        min-height: 130px;
+        max-height: 130px;
+    }
+
+    .header-title {
+        font-size: 32px;
+        font-weight: 600;
+    }
+
+    .btn-switch {
+        // width: 48px;
+        span {
+            @include flex-variant(center, center, row);
+            height: 20px;
+            margin-top: 0 !important;
+            padding: 0 !important;
+            font-size: 11px !important;
+        }
+    }
+
+    .color-container {
+        .color {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid grey;
+            margin-left: 5px;
+        }
+    }
+
+    .btn-lang {
+        @include flex-variant(center, center, row);
+        width: 30px;
+        height: 30px;
+        border-radius: 50% !important;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: #f0f0f0;
+        }
+    }
+}
+
+.dropdown-container {
+    background: #ffffff;
+    padding: 1.2rem;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}

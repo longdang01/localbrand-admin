@@ -1,0 +1,107 @@
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url(../fonts/SF-Pro-Display-Bold.ttf);
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url(../fonts/SF-Pro-Display-Light.ttf);
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url(../fonts/SF-Pro-Display-Regular.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url(../fonts/SF-Pro-Display-Semibold.ttf);
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url(../fonts/SF-Pro-Display-Medium.ttf);
+    font-weight: 500;
+    font-style: normal;
+}
+
+@import '~normalize.css';
+@import './_variables.scss';
+@import './rules.scss';
+@import './reset.scss';
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    * {
+        // font-family: 'SF Pro Display', sans-serif;
+        font-weight: 450;
+        font-size: 1.4rem;
+    }
+}
+
+.scrollbar {
+    &:hover::-webkit-scrollbar-thumb {
+        background-color: #9da5b1;
+    }
+
+    &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        border-radius: 6px;
+        transition: cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+}
+
+/* Example CSS for transition effects */
+body {
+    transition: background-color 0.3s ease-in-out;
+}
+
+.layout {
+    padding: 2.4rem;
+}
+
+.btn-delete {
+    margin-left: 1rem;
+    color: red;
+
+    span {
+        color: red;
+    }
+
+    &:hover span {
+        color: red !important;
+    }
+
+    &:hover {
+        border-color: red !important;
+    }
+}
+
+// #content {
+//     position: relative;
+
+//     .ant-modal-mask,
+//     .ant-modal-wrap {
+//         position: absolute;
+//         z-index: 999999999  ;
+//     }
+// }
+

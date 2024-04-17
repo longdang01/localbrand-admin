@@ -1,0 +1,23 @@
+.header {
+    padding: 0;
+    height: 50px;
+
+    .container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 0 2.4rem;
+        box-shadow: 0 5px 8px #0000001a;
+        border-bottom: 1px solid #fdfdfd1f; 
+    }
+}
+
+.mobile-container {
+    :global {
+        .ant-drawer-header {
+            height: 50px;
+            box-shadow: 0 5px 8px #0000001a;
+            border-bottom: 0;
+        }
+    }
+}

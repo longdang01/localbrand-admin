@@ -1,0 +1,20 @@
+
+.ant-menu {
+    border-inline-end: none !important;
+}
+
+.ant-dropdown-arrow {
+    &::before {
+        background: #ffffff !important;
+    }
+    transform: translateY(-99%) !important;
+}
+
+.ant-layout,
+.ant-menu{
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.ant-divider {
+    transition: border-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
