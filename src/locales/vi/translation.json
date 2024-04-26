@@ -1,5 +1,88 @@
 {
     "app": {
-        "title": "VOSINT3"
+        "title": "VOSINT3",
+        "click_here": "Bấm vào đây",
+        "back": "Quay lại",
+        "send_request": "Gửi yêu cầu",
+        "confirm": "Xác nhận"
+    },
+    "auth": {
+        "login": {
+            "title": "Đăng nhập",
+            "username": "Tài khoản",
+            "password": "Mật khẩu"
+        },
+        "forget_password": {
+            "title": "Quên mật khẩu",
+            "email": "Địa chỉ email"
+        },
+        "change_password": {
+            "title": "Đặt lại mật khẩu",
+            "username": "Tài khoản",
+            "new_password": "Mật khẩu mới",
+            "confirm_new_password": "Nhập lại mật khẩu mới"
+        },
+        "reset_password": {
+            "title": "Đặt lại mật khẩu",
+            "new_password": "Mật khẩu mới",
+            "confirm_new_password": "Nhập lại mật khẩu mới"
+        }
+    },
+    "users": {
+        "profile": "Thông tin người dùng",
+        "change_password": "Đổi mật khẩu",
+        "logout": "Đăng xuất",
+        "fields": {
+            "username": "Tài khoản",
+            "password": "Mật khẩu",
+            "full_name": "Họ và tên",
+            "url": "Đường dẫn",
+            "upload": "Tải lên",
+            "password_current": "Mật khẩu hiện tại",
+            "password_new": "Mật khẩu mới",
+            "password_new_confirm": "Nhập lại mật khẩu mới"
+        }
+    },
+    "messages": {
+        "required": "Không thể để trống",
+        "login_success": "Đăng nhập thành công",
+        "login_failure": "Đăng nhập không thành công",
+        "create_success": "Thêm thành công!",
+        "create_failure": "Thêm không thành công!",
+        "update_success": "Cập nhật thành công!",
+        "update_failure": "Cập nhật không thành công!",
+        "delete_success": "Xoá thành công!",
+        "delete_failure": "Xoá không thành công!",
+        "save_success": "Lưu thành công!",
+        "save_failure": "Lưu không thành công!",
+        "warning": "Cảnh báo!",
+        "question_save": "Bạn có muốn lưu thay đổi?",
+        "redirecting": "Đang chuyển hướng",
+        "validate_form": "Bạn cần điền đầy đủ thông tin",
+        "change_password_success": "Đổi mật khẩu thành công!",
+        "incorrect_password": "Mật khẩu không chính xác!",
+        "not_matching_password": "Mật khẩu mới không được trùng với mật khẩu cũ",
+        "error_confirm_password": "Hai mật khẩu vừa nhập không đồng nhất!"
+    },
+    "validators": {
+        "image_url_invalid": "Đường dẫn ảnh không hợp lệ"
+    },
+    "errors": {
+        "404": {
+            "title": "Không tìm thấy trang",
+            "sub_title": "Xin lỗi, trang bạn đang tìm kiếm không tồn tại.",
+            "btn_back": "Về trang chủ" 
+        },
+        "403": {
+            "title": "Không có quyền truy cập",
+            "sub_title": "Xin lỗi, bạn không có quyền truy cập trang này.",
+            "btn_back": "Về trang chủ" 
+        },
+        "500": {
+            "title": "Lỗi máy chủ",
+            "sub_title": "Xin lỗi, máy chủ đang gặp sự cố. Vui lòng thử lại sau.",
+            "btn_back": "Về trang chủ" 
+        }
+        
     }
 }

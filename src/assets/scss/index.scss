@@ -29,6 +29,14 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Mona Sans';
+    font-stretch: 75% 125%;
+    font-weight: 200 900;
+    src: url('../fonts/mona-sans/Mona-Sans-f258701679eace96725e03121950af40ae6e4ceef03b21242c66a3b7ae6ccbf4.woff2')
+        format('woff2');
+}
+
 @import '~normalize.css';
 @import './_variables.scss';
 @import './rules.scss';
@@ -78,6 +86,18 @@ body {
     padding: 2.4rem;
 }
 
+.layout-vertical {
+    padding: 2.4rem 0;
+}
+
+.layout-horizontal {
+    padding: 0 2.4rem;
+}
+
+.area {
+    padding: 0 2.4rem;
+}
+
 .btn-delete {
     margin-left: 1rem;
     color: red;
@@ -95,6 +115,14 @@ body {
     }
 }
 
+.text-secondary {
+    color: grey;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
 // #content {
 //     position: relative;
 
@@ -105,3 +133,44 @@ body {
 //     }
 // }
 
+/* HTML: <div class="loader"></div> */
+.dot-loader {
+    width: 15px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: l5 1s infinite linear alternate;
+}
+
+.dot-loader-sm {
+    width: 12px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: l5 1s infinite linear alternate;
+}
+
+@keyframes l5 {
+    0% {
+        box-shadow:
+            20px 0 #000,
+            -20px 0 #0002;
+        background: #000;
+    }
+    33% {
+        box-shadow:
+            20px 0 #000,
+            -20px 0 #0002;
+        background: #0002;
+    }
+    66% {
+        box-shadow:
+            20px 0 #0002,
+            -20px 0 #000;
+        background: #0002;
+    }
+    100% {
+        box-shadow:
+            20px 0 #0002,
+            -20px 0 #000;
+        background: #000;
+    }
+}

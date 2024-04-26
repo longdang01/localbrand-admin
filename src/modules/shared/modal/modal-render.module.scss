@@ -1,4 +1,33 @@
+:global {
+    .modal-custom-header {
+        .ant-modal-content {
+            padding: 0;
+        }
+
+        .modal-header {
+            padding: 8px 24px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+
+            .title-header {
+                color: white;
+
+                * {
+                    color: white;
+                    font-weight: bold;
+                }
+
+            }
+        }
+
+        .ant-modal-footer {
+            padding: 15px 24px;
+        }
+    }
+}
+
 .modal-content {
+    padding: 2.4rem;
     overflow-x: hidden;
     overflow-y: auto;
 

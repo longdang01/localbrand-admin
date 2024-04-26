@@ -1,0 +1,40 @@
+.table-container {
+    :global {
+        tr {
+            .ant-table-selection-column {
+                padding-left: 24px !important;
+            }
+        }
+
+        .ant-table-row {
+            position: relative;
+        }
+
+        .table-tools {
+            display: none;
+        }
+
+        .ant-table-row:hover {
+            position: relative;
+            box-shadow: 0 4px 2px -2px gray !important;
+
+            > td .table-date {
+                display: none;
+            }
+
+            > td .table-tools {
+                display: inline-flex;
+            }
+        }
+
+        
+
+        .ant-table-content {
+            padding-bottom: 5px;
+        }
+    }
+
+    
+
+}
+

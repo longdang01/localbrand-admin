@@ -1,4 +1,4 @@
-const storagePrefix = 'V-OSINT3_';
+const storagePrefix = 'V-OSINT3-Plus_';
 
 const storage = {
     getStorage: (key: string) => {

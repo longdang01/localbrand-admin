@@ -64,7 +64,8 @@ const PageHeader = ({
         // console.log(COLORS?.find(color => color?.id == storage.getStorage("color"))?.config);
         setThemeColor(
             COLORS?.find(
-                (color) => color?.id == localStorage.getItem('V-OSINT3_color'),
+                (color) =>
+                    color?.id == localStorage.getItem('V-OSINT3-Plus_color'),
             )?.config || themeLightConfig,
         );
     }, []);
@@ -114,7 +115,7 @@ const PageHeader = ({
                                 >
                                     <HomeOutlined />
                                 </Button>
-                                <span>/</span>
+                                {pageBreadcrumbs && <span>/</span>}
                             </>
                         )}
                         <BreadcrumbRender items={pageBreadcrumbs} />
@@ -167,19 +168,23 @@ const PageHeader = ({
                             {isSmallScreen ? (
                                 <Dropdown
                                     className={classes.dropdown}
-                                    dropdownRender={() => 
-                                        <div className={classes.dropdownContainer}>
+                                    dropdownRender={() => (
+                                        <div
+                                            className={
+                                                classes.dropdownContainer
+                                            }
+                                        >
                                             <>{children}</>
                                         </div>
-                                    }
+                                    )}
                                     arrow
                                     placement="bottomRight"
-                                    trigger={["click"]}
+                                    trigger={['click']}
                                 >
                                     <MoreOutlined />
                                 </Dropdown>
                             ) : (
-                                <>{ children }</>
+                                <>{children}</>
                             )}
                         </>
                     </Flex>

@@ -39,6 +39,9 @@ export const themeLightConfig: ThemeConfig = {
     components: {
         Layout: {
             headerBg: "#ffffff"
+        },
+        Table: {
+            rowExpandedBg: "#ffffff"
         }
     }
 }
@@ -80,6 +83,7 @@ export const themeBlueConfig: ThemeConfig = {
         Table: {
             controlItemBgActive: "#c8ced2",
             controlItemBgActiveHover: "#c8ced2",
+            rowExpandedBg: "#ffffff"
             
         }
     }
@@ -123,6 +127,8 @@ export const themeBrownConfig: ThemeConfig = {
         Table: {
             controlItemBgActive: "#b0afab",
             controlItemBgActiveHover: "#b0afab",
+            rowExpandedBg: "#ffffff"
+
         }
     }
 }

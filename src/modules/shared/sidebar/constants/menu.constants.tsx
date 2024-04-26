@@ -10,6 +10,7 @@ import {
 import avatar from '@/assets/images/avatars/avatar.jpg';
 import Avatar from 'antd/es/avatar/avatar';
 import classes from "../sidebar.module.scss";
+import { t } from 'i18next';
 
 export const MENU = [
     {
@@ -87,7 +88,7 @@ export const MENU_USERS = [
         children: [
             {
                 key: 11,
-                label: 'Profile',
+                label: t("users.profile"),
                 icon: <UserOutlined />,
                 children: [],
             },

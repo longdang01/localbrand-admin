@@ -8,5 +8,7 @@ export interface DataType {
     name: string;
     age: number;
     address: string;
+    date?: string;
+    content?: string;
     vehicles?: VehicleType[];
 }

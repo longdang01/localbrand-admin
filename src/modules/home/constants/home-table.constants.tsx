@@ -42,7 +42,10 @@ export const HOME_DATA: DataType[] = [
         key: '1',
         name: 'John Brown',
         age: 32,
+        date: "17/04/2024",
         address: 'New York No. 1 Lake Park',
+        // content: "Quy định chỉ dân đen mới được lấy công chúa thời nhà Minh",
+        content: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta in mollitia unde optio accusantium ut dolore minus suscipit sed necessitatibus.",
         vehicles: [
             {
                 key: '11',
@@ -56,42 +59,60 @@ export const HOME_DATA: DataType[] = [
     },
     {
         key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
+        name: 'Jasmine',
+        age: 28,
+        date: "17/04/2024",
+        address: 'New York No. 1 Lake Park',
+        content: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta in mollitia unde optio accusantium ut dolore minus suscipit sed necessitatibus.",
         vehicles: [
             {
-                key: '21',
-                vehicle_name: 'GLC',
+                key: '11',
+                vehicle_name: 'Mercedes-Benz',
             },
             {
-                key: '22',
-                vehicle_name: 'Mazda CX5',
+                key: '12',
+                vehicle_name: 'Porches',
             },
         ],
     },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-        vehicles: [
-            {
-                key: '31',
-                vehicle_name: 'KIA Morning',
-            },
-        ],
-    },
-    {
-        key: '4',
-        name: 'Disabled User',
-        age: 99,
-        address: 'Sydney No. 1 Lake Park',
-        vehicles: [
-            {
-                key: '41',
-                vehicle_name: 'Bike',
-            },
-        ],
-    },
+    // {
+    //     key: '2',
+    //     name: 'Jim Green',
+    //     age: 42,
+    //     address: 'London No. 1 Lake Park',
+    //     vehicles: [
+    //         {
+    //             key: '21',
+    //             vehicle_name: 'GLC',
+    //         },
+    //         {
+    //             key: '22',
+    //             vehicle_name: 'Mazda CX5',
+    //         },
+    //     ],
+    // },
+    // {
+    //     key: '3',
+    //     name: 'Joe Black',
+    //     age: 32,
+    //     address: 'Sydney No. 1 Lake Park',
+    //     vehicles: [
+    //         {
+    //             key: '31',
+    //             vehicle_name: 'KIA Morning',
+    //         },
+    //     ],
+    // },
+    // {
+    //     key: '4',
+    //     name: 'Disabled User',
+    //     age: 99,
+    //     address: 'Sydney No. 1 Lake Park',
+    //     vehicles: [
+    //         {
+    //             key: '41',
+    //             vehicle_name: 'Bike',
+    //         },
+    //     ],
+    // },
 ];
