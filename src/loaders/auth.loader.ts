@@ -3,7 +3,7 @@ import {
     MutationConfig,
     QueryConfig,
 } from '@/lib/react-query';
-import { changePassword, getMe, login } from '@/services/user.service';
+import { changePassword, forgotPassword, getMe, login, resetPassword } from '@/services/user.service';
 import { AxiosRequestConfig } from 'axios';
 import { useMutation, useQuery } from 'react-query';
 
@@ -54,5 +54,33 @@ export const useChangePassword = ({
         onSuccess: () => {},
         ...config,
         mutationFn: changePassword,
+    });
+};
+
+export const useForgotPassword = ({
+    config,
+}: {
+    config?: MutationConfig<typeof forgotPassword>;
+}) => {
+    return useMutation({
+        onMutate: () => {},
+        onError: () => {},
+        onSuccess: () => {},
+        ...config,
+        mutationFn: forgotPassword,
+    });
+};
+
+export const useResetPassword = ({
+    config,
+}: {
+    config?: MutationConfig<typeof resetPassword>;
+}) => {
+    return useMutation({
+        onMutate: () => {},
+        onError: () => {},
+        onSuccess: () => {},
+        ...config,
+        mutationFn: resetPassword,
     });
 };

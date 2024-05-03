@@ -4,7 +4,8 @@ import { LOGIN_PATH } from '@/paths';
 
 export const apiClient = axios.create({
     baseURL: BASE_URL,
-    timeout: 10000,
+    // timeout: 10000,
+    timeout: 1000 * 60 * 30 * 3, // 90 minutes,
     withCredentials: true,
 });
 

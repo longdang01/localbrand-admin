@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import {
-    FORGET_PASSWORD_PATH,
+    FORGOT_PASSWORD_PATH,
     HOME_PATH,
     LOGIN_PATH,
     NOT_AUTHORIZATION_PATH,
@@ -12,7 +12,7 @@ import AppLayout from './modules/app/views/AppLayout';
 import Home from './modules/home/views/Home';
 import AuthLayout from './modules/auth/views/AuthLayout';
 import Login from './modules/auth/login/Login';
-import ForgetPassword from './modules/auth/forget-password/ForgetPassword';
+import ForgotPassword from './modules/auth/forgot-password/ForgotPassword';
 import { ErrorBoundary } from './modules/errors/ErrorBoundary';
 import { NotFoundPage } from './modules/errors/404';
 import { NotAuthorizationPage } from './modules/errors/403';
@@ -51,8 +51,8 @@ const routers = createBrowserRouter([
                 element: <Login />,
             },
             {
-                path: FORGET_PASSWORD_PATH,
-                element: <ForgetPassword />,
+                path: FORGOT_PASSWORD_PATH,
+                element: <ForgotPassword />,
             },
             {
                 path: RESET_PASSWORD_PATH,

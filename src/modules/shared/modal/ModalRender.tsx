@@ -3,6 +3,7 @@ import React from 'react';
 import classes from './modal-render.module.scss';
 import { CloseOutlined } from '@ant-design/icons';
 import { customColorsWhiteText } from '@/utils/colors';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     open?: boolean;
@@ -19,6 +20,9 @@ interface Props {
     top?: number;
     height?: string;
     customHeader?: boolean;
+
+    okText?: string;
+    cancelText?: string;
 
     handleSubmit?: () => void;
     handleOpen?: () => void;
@@ -43,7 +47,11 @@ const ModalRender = ({
     width = 960,
     height = 'calc(100vh - 180px)',
     customHeader = false,
+    okText,
+    cancelText
+
 }: Props) => {
+    const { t } = useTranslation("translation")
     const { token } = useToken();
 
     return (
@@ -55,8 +63,8 @@ const ModalRender = ({
                 open={open}
                 onOk={handleSubmit}
                 onCancel={handleCancel}
-                okText={'Apply'}
-                cancelText={'Cancel'}
+                okText={okText || t("modal_render.ok_text")}
+                cancelText={cancelText || t("modal_render.cancel_text")}
                 okButtonProps={{ hidden: hideOkButton ? true : false }}
                 cancelButtonProps={{
                     hidden: hideCancelButton ? true : false,
@@ -71,6 +79,7 @@ const ModalRender = ({
                     !customHeader ? 'modal-container' : 'modal-custom-header'
                 }
                 style={{ top: top }}
+                
             >
                 {customHeader && (
                     <Flex

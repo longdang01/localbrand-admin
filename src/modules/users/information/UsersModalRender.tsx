@@ -184,6 +184,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                 handleCancel={handleClose}
                 handleSubmit={handleSubmit}
                 confirmLoading={updateProfile?.isLoading}
+                okText=''
             >
                 <Form form={form}>
                     <Row gutter={[24, 24]}>
@@ -270,6 +271,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                                     beforeUpload={() => false}
                                     accept="image/*"
                                     className={classes.uploadContainer}
+                                    style={{ width: "100%", height: "100%"}}
                                 >
                                     {fileList.length < 1 && '+ Upload'}
                                 </Upload>

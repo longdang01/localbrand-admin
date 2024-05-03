@@ -95,7 +95,10 @@ const MenuUsers = ({ vertical = true }: Props) => {
     const handleLogout = async () => {
         await logout();
         localStorage.clear();
-        navigate(LOGIN_PATH);
+        
+        setTimeout(() => {
+            navigate(LOGIN_PATH);
+        }, 300);
     }
 
     return (

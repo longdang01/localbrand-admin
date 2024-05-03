@@ -62,7 +62,9 @@
         "change_password_success": "Đổi mật khẩu thành công!",
         "incorrect_password": "Mật khẩu không chính xác!",
         "not_matching_password": "Mật khẩu mới không được trùng với mật khẩu cũ",
-        "error_confirm_password": "Hai mật khẩu vừa nhập không đồng nhất!"
+        "error_confirm_password": "Hai mật khẩu vừa nhập không đồng nhất!",
+        "request_success": "Gửi yêu cầu thành công!",
+        "reset_password_success": "Đặt lại mật khẩu thành công!"
     },
     "validators": {
         "image_url_invalid": "Đường dẫn ảnh không hợp lệ"
@@ -84,5 +86,9 @@
             "btn_back": "Về trang chủ" 
         }
         
+    },
+    "modal_render": {
+        "ok_text": "Lưu",
+        "cancel_text": "Huỷ"
     }
 }

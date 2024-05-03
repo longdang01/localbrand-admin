@@ -4,7 +4,7 @@ import FormItem from 'antd/es/form/FormItem';
 import { Button, Flex, Input, Typography, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { FORGET_PASSWORD_PATH, HOME_PATH } from '@/paths';
+import { FORGOT_PASSWORD_PATH, HOME_PATH } from '@/paths';
 import LayoutForm from '../../layout-form/LayoutForm';
 import { useLogin } from '@/loaders/auth.loader';
 import storage from '@/utils/storage';
@@ -22,7 +22,6 @@ const LoginForm = ({}: Props) => {
     const login = useLogin({
         config: {
             onSuccess: (response) => {
-                console.log(response);
                 // save to localStorage
                 storage.setStorage('user', JSON.stringify(response?.detail));
 
@@ -78,6 +77,7 @@ const LoginForm = ({}: Props) => {
                                 <Input
                                     className={classes.formInput}
                                     placeholder={t('auth.login.username')}
+                                    onPressEnter={handleSubmit}
                                 />
                             </FormItem>
                             <FormItem
@@ -88,6 +88,7 @@ const LoginForm = ({}: Props) => {
                                 <Input.Password
                                     className={`${classes.formInput} ${classes.formPassword}`}
                                     placeholder={t('auth.login.password')}
+                                    onPressEnter={handleSubmit}
                                 />
                             </FormItem>
                         </Form>
@@ -96,6 +97,7 @@ const LoginForm = ({}: Props) => {
                         <Button
                             className={classes.btnSubmit}
                             onClick={handleSubmit}
+                            loading={login?.isLoading}
                         >
                             {t('auth.login.title')}
                         </Button>
@@ -108,7 +110,7 @@ const LoginForm = ({}: Props) => {
                         <Typography.Text>
                             {t('auth.forget_password.title')}
                         </Typography.Text>
-                        <Link to={FORGET_PASSWORD_PATH}>
+                        <Link to={FORGOT_PASSWORD_PATH}>
                             {t('app.click_here')}
                         </Link>
                     </Flex>

@@ -1,5 +1,5 @@
 import { apiClient } from '@/lib/api';
-import { ChangePasswordProps, UserLoginProps } from '@/models/auth';
+import { ChangePasswordProps, ForgotPasswordProps, ResetPasswordProps, UserLoginProps } from '@/models/auth';
 import { UserProfile } from '@/models/users';
 
 const prefix = 'user';
@@ -9,8 +9,8 @@ export const getMe = async () => {
     return response.data;
 };
 
-export const login = async (data: UserLoginProps) => {
-    const response = await apiClient?.post(`/login`, data);
+export const login = async (request: UserLoginProps) => {
+    const response = await apiClient?.post(`/login`, request);
     return response.data;
 };
 
@@ -19,13 +19,23 @@ export const logout = async () => {
     return response?.data;
 }
 
-export const changePassword = async (data: ChangePasswordProps) => {
-    const response = await apiClient?.put(`/change-password`, data);
+export const changePassword = async (request: ChangePasswordProps) => {
+    const response = await apiClient?.put(`/change-password`, request);
     return response.data;
 };
 
-export const updateProfile = async (data: UserProfile) => {
-    const response = await apiClient?.put(`${prefix}/profile`, data);
+export const updateProfile = async (request: UserProfile) => {
+    const response = await apiClient?.put(`${prefix}/profile`, request);
+    return response.data;
+};
+
+export const forgotPassword = async (request: ForgotPasswordProps) => {
+    const response = await apiClient?.post(`/email/forgot-password`, request);
+    return response.data;
+};
+
+export const resetPassword = async (request: ResetPasswordProps) => {
+    const response = await apiClient?.post(`/reset-password`, request);
     return response.data;
 };
 
