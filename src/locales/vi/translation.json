@@ -4,7 +4,38 @@
         "click_here": "Bấm vào đây",
         "back": "Quay lại",
         "send_request": "Gửi yêu cầu",
-        "confirm": "Xác nhận"
+        "confirm": "Xác nhận",
+        "search_here": "Tìm kiếm tại đây"
+    },
+    "data_warehouse": {
+        "title": "Quản lý kho dữ liệu",
+        "features": {
+            "catalog": "Danh mục",
+            "warehouse": "Dữ liệu",
+            "statistics": "Thống kê"
+        },
+        "catalog": {
+            "meta_title": "Danh mục dữ liệu",
+            "title": "Danh mục",
+            "list": "Danh sách danh mục",
+            "create": "Thêm danh mục",
+            "update": "Sửa danh mục",
+            "delete": "Xoá danh mục",
+            "delete_multi": "Xoá nhiều danh mục",
+            "refresh": "Làm mới",
+            "search_here": "Tìm kiếm tại đây",
+            "fields": {
+                "serial": "STT",
+                "catalog_name": "Danh mục",
+                "catalog_description": "Mô tả",
+                "picture": "Ảnh",
+                "sort_order": "Thứ tự",
+                "action": "Tác vụ"
+            },
+            "confirm_delete": "Bạn có chắc chắn muốn xoá danh mục này không?",
+            "confirm_delete_multi": "Bạn có chắc chắn muốn xoá những danh mục này không?",
+            "confirm_delete_title": "Xác nhận xoá"
+        }
     },
     "auth": {
         "login": {
@@ -90,5 +121,9 @@
     "modal_render": {
         "ok_text": "Lưu",
         "cancel_text": "Huỷ"
+    },
+    "confirm": {
+        "delete": "Xoá",
+        "cancel": "Huỷ"
     }
 }

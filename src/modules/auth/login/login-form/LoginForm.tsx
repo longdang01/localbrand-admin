@@ -108,7 +108,7 @@ const LoginForm = ({}: Props) => {
                         align="center"
                     >
                         <Typography.Text>
-                            {t('auth.forget_password.title')}
+                            {t('auth.forget_password.title')}?
                         </Typography.Text>
                         <Link to={FORGOT_PASSWORD_PATH}>
                             {t('app.click_here')}

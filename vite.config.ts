@@ -18,21 +18,22 @@ export default defineConfig({
         },
     },
     server: {
-        // port: 4200,
-        // proxy: {
-        //     //   '/api': {
-        //     //     target: 'https://sca.vn/api', 
-        //     //     changeOrigin: true,
-        //     //     secure: false,
-        //     //     rewrite: (path) => path.replace(/^\/api/, ''),
-        //     //   },  
+        port: 4201,
+        proxy: {
+              '/api': {
+                target: 'https://sca.vn/api', 
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/api/, ''),
+              },  
+            
 
-        //     '/api': {
-        //         target: 'http://0.0.0.0:6102', 
-        //         changeOrigin: true,
-        //         secure: false,
-        //         rewrite: (path) => path.replace(/^\/api/, ''),
-        //     },  
-        // },
+            // '/api': {
+            //     target: 'http://0.0.0.0:6102', 
+            //     changeOrigin: true,
+            //     secure: false,
+            //     rewrite: (path) => path.replace(/^\/api/, ''),
+            // },  
+        },
     },
 });

@@ -18,7 +18,7 @@ export const themeDarkConfig: ThemeConfig = {
     components: {
         Layout: {
             headerBg: "#141414"
-        }
+        },
     }
 }
 
@@ -42,7 +42,7 @@ export const themeLightConfig: ThemeConfig = {
         },
         Table: {
             rowExpandedBg: "#ffffff"
-        }
+        },
     }
 }
 

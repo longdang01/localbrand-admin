@@ -6,12 +6,13 @@ import {
     theme,
 } from 'antd';
 import classes from './sidebar.module.scss';
-import { BrandDark, BrandLight } from '@/assets/svg/index';
 import Sider from 'antd/es/layout/Sider';
 import { useColorState } from '@/stores/color.store';
 import { useSidebar } from '@/stores/sidebar.store';
 import MenuFunctions from './components/menu-functions/MenuFunctions';
 import MenuUsers from './components/menu-users/MenuUsers';
+import LogoLight from '../logo/LogoLight';
+import LogoDark from '../logo/LogoDark';
 
 const { useToken } = theme;
 
@@ -68,9 +69,11 @@ const Sidebar = () => {
                                 className={`${classes.brand} ${collapsed ? classes.collapsed : ''}`}
                             >
                                 {token.colorPrimary == '#1677ff' ? (
-                                    <BrandLight />
+                                    // <BrandLight />
+                                    <LogoLight />
                                 ) : (
-                                    <BrandDark />
+                                    // <BrandDark />
+                                    <LogoDark />
                                 )}
                             </Typography.Link>
                             <MenuFunctions />

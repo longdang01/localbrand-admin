@@ -8,11 +8,12 @@ interface Props {
     data?: any[];
     total?: number;
     isCheckBox?: boolean;
+    rowKey?: string;
 }
 
 const TYPE_SELECT = 'checkbox';
 
-const TableRender = ({ columns, data, total, isCheckBox = false }: Props) => {
+const TableRender = ({ columns, data, total, isCheckBox = false, rowKey = "_id" }: Props) => {
     const hideGotoRange1 = useMediaQuery({ minWidth: 600, maxWidth: 650 });
     const hideGotoRange2 = useMediaQuery({ minWidth: 750, maxWidth: 850 });
 
@@ -45,6 +46,7 @@ const TableRender = ({ columns, data, total, isCheckBox = false }: Props) => {
                     pagination={false}
                     bordered
                     size="large"
+                    rowKey={rowKey}
                 />
             </div>
             <Flex align="center" justify="end">

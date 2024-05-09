@@ -1,0 +1,23 @@
+
+@import '@/assets/scss/_variables.scss';
+@import '@/assets/scss/rules.scss';
+
+.container {
+    padding: 1rem 2.4rem;
+
+    &.dark {
+        background: #1d1d1d;
+    }
+
+    &.light {
+        background: #fafafa;
+    }
+
+
+    .buttons {
+        button {
+            margin-right: 1rem;
+        }
+    }
+
+}

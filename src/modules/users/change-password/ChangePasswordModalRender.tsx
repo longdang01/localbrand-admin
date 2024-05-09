@@ -113,8 +113,8 @@ const ChangePasswordModalRender = ({ open, handleClose }: Props) => {
                     <Form.Item
                         labelCol={{ span: 7 }}
                         name={'new_confirm_password'}
-                        dependencies={['new_password']}
                         label={t('users.fields.password_new_confirm')}
+                        dependencies={['new_password']}
                         rules={[
                             ...RULES_FORM.required,
                             ...RULES_FORM.password,

@@ -1,4 +1,3 @@
-import { BrandDark, BrandLight } from '@/assets/svg/index';
 import { Button, Drawer, Flex, theme } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import classes from './header.module.scss';
@@ -6,6 +5,8 @@ import { useState } from 'react';
 import { FaBars } from 'react-icons/fa6';
 import MenuFunctions from '../sidebar/components/menu-functions/MenuFunctions';
 import MenuUsers from '../sidebar/components/menu-users/MenuUsers';
+import LogoLight from '../logo/LogoLight';
+import LogoDark from '../logo/LogoDark';
 
 const { useToken } = theme;
 
@@ -30,9 +31,9 @@ const HeaderRender = () => {
                     className={classes.container}
                 >
                     {token.colorPrimary == '#1677ff' ? (
-                        <BrandLight />
+                        <LogoLight />
                     ) : (
-                        <BrandDark />
+                        <LogoDark />
                     )}
                     <Button icon={<FaBars />} onClick={handleShowDrawer} />
                 </Flex>

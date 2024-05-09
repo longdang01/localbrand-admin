@@ -1,5 +1,8 @@
 // FOR FEATURES
 const HOME_PATH = '/';
+const DATA_CATALOG_PATH = '/data-catalog';
+const DATA_WAREHOUSE_PATH = '/data-warehouse';
+const DATA_STATISTICS_PATH = '/data-statistics';
 
 // ERRORS
 const NOT_FOUND_PATH = "/not-found";
@@ -13,6 +16,9 @@ const RESET_PASSWORD_PATH = "/reset-password/:username/:token";
 
 export { 
     HOME_PATH,
+    DATA_CATALOG_PATH,
+    DATA_WAREHOUSE_PATH,
+    DATA_STATISTICS_PATH,
 
     LOGIN_PATH,
     FORGOT_PASSWORD_PATH,
