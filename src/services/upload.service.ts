@@ -7,7 +7,7 @@ const uploadFile = async (data: any) => {
       "Content-Type": "multipart/form-data",
     },
   });
-  return response;
+  return response?.data;
 };
 
 const uploadImage = async (data: any) => {

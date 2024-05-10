@@ -25,8 +25,8 @@
                     @include flex-variant(start, center, row);
                 }
     
-                ul li div span {
-                    font-weight: 500;
+                ul li > div {
+                    font-weight: 600;
                 }
 
                 .user-collapsed {
@@ -75,9 +75,14 @@
 
                 }
     
-                ul li span {
-                    font-weight: 500;
+                :global {
+                    .ant-menu-sub {
+                        li > span {
+                            font-weight: 500;
+                        }
+                    }
                 }
+                
             }
         }
     }

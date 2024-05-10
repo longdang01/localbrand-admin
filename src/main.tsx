@@ -18,18 +18,18 @@ const App = () => {
     i18next.init();
 
     const storedLocale = localStorage.getItem('locale');
-    if(!storedLocale) localStorage.setItem("locale", "en");
+    if (!storedLocale) localStorage.setItem('locale', 'vi');
 
-    const initialLocale = storedLocale || 'en';
+    const initialLocale = storedLocale || 'vi';
     i18next.changeLanguage(initialLocale);
-    
+
     return (
         <React.StrictMode>
             <QueryClientProvider client={queryClient}>
                 <I18nextProvider i18n={i18next}>
-                    <ConfigProvider theme={themeColor}
-                    locale={initialLocale === 'vi' ? viVN : enUS}
-                    
+                    <ConfigProvider
+                        theme={themeColor}
+                        locale={initialLocale === 'vi' ? viVN : enUS}
                     >
                         <RouterProvider router={routers} />
                     </ConfigProvider>

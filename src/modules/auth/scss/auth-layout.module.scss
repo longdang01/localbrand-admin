@@ -1,8 +1,97 @@
+@import '@/assets/scss/_variables.scss';
+@import '@/assets/scss/rules.scss';
+
 .container {
-    .image-container {
-        .image {
-            width: 100%;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        margin-top: -12%;
+        margin-bottom: -12%;
+        margin-left: -12%;
+        width: 67%;
+        transform: translate(var(0), var(0)) rotate(var(-4deg)) skewX(var(0)) skewY(var(0)) scaleX(var(1)) scaleY(var(1));
+        border-radius: 100%;
+        background: #d6d6d6;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        margin-top: -14%;
+        margin-bottom: -14%;
+        margin-left: -14%;
+        width: 68%;
+        transform: translate(var(0), var(0)) rotate(var(-4deg)) skewX(var(0)) skewY(var(0)) scaleX(var(1)) scaleY(var(1));
+        border-radius: 100%;
+        background: #373B44;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    }
+
+    .display-container {
+        position: relative;
+
+        .brand {
+            position: absolute;
+            top: 30px;
+            left: 120px;
+            font-weight: 900;
+            font-size: 32px;
+            color: #fff;
+            letter-spacing: .1rem;
+            z-index: 9;
         }
+
+        .display-inner {
+            height: 100vh;
+            
+            .main {
+                position: relative;
+                padding-top: 8rem;
+                z-index: 9;
+                
+                img {
+                    object-fit: cover;
+                    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                }
+
+                .left {
+                    position: absolute;
+                    top: -40px;
+                    left: -40px;
+                    width: 200px;
+                    height: 200px;
+                    border-radius: 20px;
+                }
+
+                .right {
+                    position: absolute;
+                    bottom: -40px;
+                    right: -40px;
+                    width: 200px;
+                    height: 200px;
+                    border-radius: 50%;
+                }
+
+                .center {
+                    width: 450px;
+                    height: 450px;
+                    border-radius: 50%;
+                }
+            }
+        }
+        
     }
 
     

@@ -8,14 +8,14 @@ import {
     SettingOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { useGetMe } from '@/loaders/auth.loader';
 import UsersModalRender from '@/modules/users/information/UsersModalRender';
 import { useState } from 'react';
-import { BASE_URL } from '@/constants/config';
 import ChangePasswordModalRender from '@/modules/users/change-password/ChangePasswordModalRender';
 import { useNavigate } from 'react-router-dom';
 import { LOGIN_PATH } from '@/paths';
-import { logout } from '@/services/user.service';
+import { useGetMe } from '@/loaders/auth.loader';
+import storage from '@/utils/storage';
+import { ACCESS_TOKEN, ROLE } from '@/constants/config';
 
 interface Props {
     vertical?: boolean;
@@ -32,6 +32,7 @@ const MenuUsers = ({ vertical = true }: Props) => {
 
     const currentUsers = useGetMe({
     });
+    
    
     const [collapsed] = useSidebar((state) => [state.collapsed]);
 
@@ -44,13 +45,12 @@ const MenuUsers = ({ vertical = true }: Props) => {
                     <div className="dot-loader-sm"></div>
                 </div>
             ) : (
-                currentUsers?.data?.full_name
+                currentUsers?.data?.staff?.staffName
             ),
             icon: (!currentUsers?.isLoading || !currentUsers?.isFetching) &&
             (
                 <Avatar
-                    // src={(generateImage(`${BASE_URL}/${currentUsers?.data?.avatar_url}`) || defaultAvatar)}
-                    src={currentUsers?.data?.avatar_url ? `${BASE_URL}/${currentUsers?.data?.avatar_url}` : defaultAvatar}
+                    src={currentUsers?.data?.staff.picture || defaultAvatar}
                     size={'small'}
                     shape="circle"
                     className={classes.avatar}
@@ -93,8 +93,8 @@ const MenuUsers = ({ vertical = true }: Props) => {
 
     // handle logout
     const handleLogout = async () => {
-        await logout();
-        localStorage.clear();
+        storage.clearStorage(ACCESS_TOKEN);
+        storage.clearStorage(ROLE);
         
         setTimeout(() => {
             navigate(LOGIN_PATH);
@@ -122,6 +122,7 @@ const MenuUsers = ({ vertical = true }: Props) => {
                     }}
                 />
                 <Menu
+                    triggerSubMenuAction='click'
                     onClick={handleChangeUsers}
                     onOpenChange={handleChangeUsers}
                     mode={vertical ? 'vertical' : 'inline'}

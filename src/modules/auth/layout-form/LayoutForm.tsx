@@ -21,6 +21,7 @@ const LayoutForm = ({ logoRender = false, children }: Props) => {
                     style={{ height: '100vh' }}
                 >
                     <div className={classes.inner}>
+                        
                         {logoRender && (
                             <div className={classes.logoTitle}>
                                 {logo ? <img src={logo} className={classes.logoImage}/> : TITLE_LOGIN}

@@ -13,7 +13,7 @@ import { logout } from '@/services/user.service';
 const ResetPassword = () => {
     const { t } = useTranslation('translation');
     const [form] = useForm();
-    const { username, token } = useParams();
+    const { id, token } = useParams();
     const navigate = useNavigate();
 
 
@@ -41,7 +41,7 @@ const ResetPassword = () => {
         form.validateFields().then(async(values) => {
             resetPassword.mutate({
                 ...values,
-                username: username,
+                id: id,
                 token: token
             })
 
@@ -63,29 +63,10 @@ const ResetPassword = () => {
                         <Form form={form} className={classes.form} layout='vertical'>
                             <FormItem
                                 className={classes.formItem}
-                                name={'new_password'}
-                                dependencies={['password']}
+                                name={'newPassword'}
                                 rules={[
                                     ...RULES_FORM.required,
                                     ...RULES_FORM.password,
-                                    ({ getFieldValue }) => ({
-                                        validator(_, value) {
-                                            if (
-                                                !value ||
-                                                getFieldValue('password') !==
-                                                    value
-                                            ) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(
-                                                new Error(
-                                                    t(
-                                                        'messages.not_matching_password',
-                                                    ),
-                                                ),
-                                            );
-                                        },
-                                    }),
                                 ]}
                                 hasFeedback
                             >
@@ -97,8 +78,8 @@ const ResetPassword = () => {
                             </FormItem>
                             <FormItem
                                 className={classes.formItem}
-                                name={'new_confirm_password'}
-                                dependencies={['new_password']}
+                                name={'newConfirmPassword'}
+                                dependencies={['newPassword']}
                                 rules={[
                                     ...RULES_FORM.required,
                                     ...RULES_FORM.password,
@@ -107,7 +88,7 @@ const ResetPassword = () => {
                                             if (
                                                 !value ||
                                                 getFieldValue(
-                                                    'new_password',
+                                                    'newPassword',
                                                 ) === value
                                             ) {
                                                 return Promise.resolve();

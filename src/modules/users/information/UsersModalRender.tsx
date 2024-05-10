@@ -19,17 +19,16 @@ import { useState } from 'react';
 import classes from './users-modal.module.scss';
 import { CACHE_AUTH, useGetMe } from '@/loaders/auth.loader';
 import {
-    BASE_URL,
     DEFAULT_NAME_FILE_LIST,
     DEFAULT_STATUS_FILE_LIST,
     DEFAULT_UID_FILE_LIST,
 } from '@/constants/config';
-import { checkImageExists, generateImage } from '@/utils/image';
+import { checkImageExists } from '@/utils/image';
 import { RULES_FORM } from '@/utils/validator';
-import { uploadImage } from '@/services/upload.service';
+import { uploadFile } from '@/services/upload.service';
 import defaultAvatar from '@/assets/images/avatars/default.png';
-import { useUpdateProfile } from '@/loaders/users.loader';
 import { queryClient } from '@/lib/react-query';
+import { useUpdateStaff } from '@/loaders/staff.loader';
 
 interface Props {
     open?: boolean;
@@ -41,7 +40,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
     const [form] = useForm();
     const [isUpload, setIsUpload] = useState(true);
 
-    const updateProfile = useUpdateProfile({
+    const updateProfile = useUpdateStaff({
         config: {
             onSuccess: (_) => {
                 queryClient.invalidateQueries([CACHE_AUTH.AUTH_ME]);
@@ -64,8 +63,13 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
     const currentUsers = useGetMe({
         config: {
             onSuccess: (response) => {
-                if (response) {
-                    handleBindingData(response);
+
+                if (response?.staff && response?.user) {
+                    handleBindingData({
+                        ...response?.staff,
+                        user: response?.user,
+                        username: response?.user?.username
+                    });
                 }
             },
             onError: (error: any) => {
@@ -80,9 +84,6 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
     const handleBindingData = (data: any) => {
         form.setFieldsValue({
             ...data,
-            avatar_url:
-                generateImage(`${BASE_URL}/${data?.avatar_url}`) ||
-                data?.avatar_url,
         });
 
         setFileList([
@@ -90,9 +91,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                 uid: DEFAULT_UID_FILE_LIST,
                 name: DEFAULT_NAME_FILE_LIST,
                 status: DEFAULT_STATUS_FILE_LIST,
-                url:
-                    generateImage(`${BASE_URL}/${data?.avatar_url}`) ||
-                    data?.avatar_url ||
+                url: data?.picture ||
                     defaultAvatar,
             },
         ]);
@@ -144,7 +143,11 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
     const handleChangeRatio = (e: RadioChangeEvent) => {
         setIsUpload(e.target.value);
 
-        handleBindingData(currentUsers?.data);
+        handleBindingData({
+            ...currentUsers?.data?.staff,
+            user: currentUsers?.data?.user,
+            username: currentUsers?.data?.user?.username
+        });
     };
 
     const handleSubmit = () => {
@@ -158,16 +161,22 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                                 values?.upload?.fileList?.[0].originFileObj;
                             if (currentFile) delete currentFile['uid'];
                             const formData: any = new FormData();
-                            formData.append('file', currentFile);
+                            formData.append('image', currentFile);
 
-                            const result = await uploadImage(formData);
-                            url = result.data[0].file_url;
+                            const result = await uploadFile(formData);
+                            url = result.data.url;
                         }
-                        values.avatar_url = url;
+                        values.picture = url;
                         break;
                 }
 
-                updateProfile.mutate(values);
+                
+                updateProfile.mutate(
+                    {
+                        ...currentUsers?.data?.staff,
+                        user: currentUsers?.data?.user,
+                        ...values
+                    });
             })
             .catch(() => {
                 notification.warning({ message: t('messages.validate_form') });
@@ -199,7 +208,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                             </Form.Item>
                             <Form.Item
                                 labelCol={{ span: 6 }}
-                                name={'full_name'}
+                                name={'staffName'}
                                 label={t('users.fields.full_name')}
                                 rules={[...RULES_FORM.full_name]}
                             >
@@ -225,7 +234,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                             {!isUpload && (
                                 <Form.Item
                                     labelCol={{ span: 6 }}
-                                    name={'avatar_url'}
+                                    name={'picture'}
                                     label={t('users.fields.url')}
                                     rules={[
                                         {

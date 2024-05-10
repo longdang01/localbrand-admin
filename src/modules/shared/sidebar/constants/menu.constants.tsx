@@ -12,6 +12,27 @@ import Avatar from 'antd/es/avatar/avatar';
 import classes from "../sidebar.module.scss";
 import { t } from 'i18next';
 
+export const DEFAULT_USER:any = { 
+    data: {
+        "profile_id": "73e50f1d-47b5-4a8f-9e80-ee1a4e526c7c",
+        "user_id": "7668c489-72c0-4a6c-8d23-86f9b5d0e078",
+        "first_name": "Long",
+        "middle_name": "",
+        "last_name": "Đặng",
+        "full_name": "Long Đặng",
+        "avatar": "",
+        "gender": 1,
+        "date_of_birth": "2001-07-24",
+        "email": "danglong2407@gmail.com",
+        "phone_number": "0971603963",
+        "user_name": "longdh",
+        "password": "$2b$12$iHw4yMr3UB3nBkscqEKDY.f.NKVTje8Q6scgv7M9mtlka.h4ji0lq",
+        "online_flag": 1,
+        "description": "",
+        "role_id": "a2e6d075-7b08-4a79-8379-606f5d853245"
+    }
+}
+
 export const MENU = [
     {
         key: 1,

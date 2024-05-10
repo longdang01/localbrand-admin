@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { BASE_URL } from '@/constants/config';
+import { ACCESS_TOKEN, BASE_URL, ROLE } from '@/constants/config';
+import storage from '@/utils/storage';
 import { LOGIN_PATH } from '@/paths';
 
 export const apiClient = axios.create({
@@ -11,7 +12,11 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
     (config) => {
+        config.headers.Authorization =
+            'Bearer ' + storage.getStorage(ACCESS_TOKEN);
+        config.headers.Role = storage.getStorage(ROLE);
         return config;
+
     },
     (error) => {
         return Promise.reject(error);

@@ -1,4 +1,4 @@
-const storagePrefix = 'V-OSINT3-Plus_';
+const storagePrefix = 'FRAGILE_';
 
 const storage = {
     getStorage: (key: string) => {

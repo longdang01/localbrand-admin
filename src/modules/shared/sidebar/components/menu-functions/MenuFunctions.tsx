@@ -2,7 +2,7 @@ import { Layout, Menu, MenuProps, theme } from 'antd';
 import classes from '../../sidebar.module.scss';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FolderOpenOutlined } from '@ant-design/icons';
+import { FolderOpenOutlined, HomeOutlined } from '@ant-design/icons';
 import {
     convertToMenuItems,
     getItem,
@@ -11,8 +11,8 @@ import {
 import { LevelKeysProps, NavigationItem } from '@/models/sidebar';
 import { useSidebar } from '@/stores/sidebar.store';
 import { useNavigate } from 'react-router-dom';
-import { DATA_CATALOG_PATH, DATA_STATISTICS_PATH, DATA_WAREHOUSE_PATH } from '@/paths';
-
+import { BRAND_PATH, CATEGORY_BIG_PATH, CATEGORY_SMALL_PATH, COLLECTION_PATH, DASHBOARD_PATH, IMPORT_BILL_PATH, PRODUCT_PATH, SUPPLIER_PATH } from '@/paths';
+import { FiActivity } from "react-icons/fi";
 const { useToken } = theme;
 
 const MenuFunctions = () => {
@@ -33,14 +33,29 @@ const MenuFunctions = () => {
 
     const handleNavigate = (e: any) => {
         switch(e?.key) {
-            case "11":
-                navigate(DATA_CATALOG_PATH);
+            case "1":
+                navigate(DASHBOARD_PATH);
                 break;
-            case "12":
-                navigate(DATA_WAREHOUSE_PATH);
+            case "21":
+                navigate(PRODUCT_PATH);
                 break;
-            case "13":
-                navigate(DATA_STATISTICS_PATH);
+            case "22":
+                navigate(IMPORT_BILL_PATH);
+                break;
+            case "23":
+                navigate(CATEGORY_BIG_PATH);
+                break;
+            case "24":
+                navigate(CATEGORY_SMALL_PATH);
+                break;
+            case "25":
+                navigate(BRAND_PATH);
+                break;
+            case "26":
+                navigate(SUPPLIER_PATH);
+                break;
+            case "27":
+                navigate(COLLECTION_PATH);
                 break;
         }
         
@@ -50,25 +65,55 @@ const MenuFunctions = () => {
     const MENU: NavigationItem[] = [
         {
             key: 1,
-            label: t('data_warehouse.title'),
+            label: t('dashboard.title'),
+            icon: <HomeOutlined />,
+            children: []
+        },
+        {
+            key: 2,
+            label: t('import.title'),
             icon: <FolderOpenOutlined />,
             children: [
                 {
-                    key: 11,
-                    label: t('data_warehouse.features.catalog'),
-                    icon: null,
+                    key: 21,
+                    label: t('import.features.product'),
+                    icon: <FiActivity />,
                     children: [],
                 },
                 {
-                    key: 12,
-                    label: t('data_warehouse.features.warehouse'),
-                    icon: null,
+                    key: 22,
+                    label: t('import.features.import_bill'),
+                    icon: <FiActivity />,
                     children: [],
                 },
                 {
-                    key: 13,
-                    label: t('data_warehouse.features.statistics'),
-                    icon: null,
+                    key: 23,
+                    label: t('import.features.category_big'),
+                    icon: <FiActivity />,
+                    children: [],
+                },
+                {
+                    key: 24,
+                    label: t('import.features.category_small'),
+                    icon: <FiActivity />,
+                    children: [],
+                },
+                {
+                    key: 25,
+                    label: t('import.features.brand'),
+                    icon: <FiActivity />,
+                    children: [],
+                },
+                {
+                    key: 26,
+                    label: t('import.features.supplier'),
+                    icon: <FiActivity />,
+                    children: [],
+                },
+                {
+                    key: 27,
+                    label: t('import.features.collection'),
+                    icon: <FiActivity />,
                     children: [],
                 },
             ],

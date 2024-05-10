@@ -1,6 +1,9 @@
 export type UserLoginProps = {
-    username: string;
-    password: string;
+    user: {
+        username: string;
+        password: string;
+    },
+    page: number
 }
 
 export type ChangePasswordProps = {
@@ -14,8 +17,7 @@ export type ForgotPasswordProps = {
 }
 
 export type ResetPasswordProps = {
-    new_password: string;
-    new_confirm_password: string;
-    username: string;
+    id: string;
     token: string;
+    newPassword: string;
 }

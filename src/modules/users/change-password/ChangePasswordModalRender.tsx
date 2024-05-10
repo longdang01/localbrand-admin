@@ -68,7 +68,7 @@ const ChangePasswordModalRender = ({ open, handleClose }: Props) => {
                 <Form form={form}>
                     <Form.Item
                         labelCol={{ span: 7 }}
-                        name={'password'}
+                        name={'oldPassword'}
                         label={t('users.fields.password_current')}
                         hasFeedback
                         rules={[
@@ -82,27 +82,11 @@ const ChangePasswordModalRender = ({ open, handleClose }: Props) => {
                     </Form.Item>
                     <Form.Item
                         labelCol={{ span: 7 }}
-                        name={'new_password'}
+                        name={'newPassword'}
                         label={t('users.fields.password_new')}
-                        dependencies={['password']}
                         rules={[
                             ...RULES_FORM.required,
                             ...RULES_FORM.password,
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    if (
-                                        !value ||
-                                        getFieldValue('password') !== value
-                                    ) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject(
-                                        new Error(
-                                            t('messages.not_matching_password'),
-                                        ),
-                                    );
-                                },
-                            }),
                         ]}
                         hasFeedback
                     >
@@ -112,9 +96,9 @@ const ChangePasswordModalRender = ({ open, handleClose }: Props) => {
                     </Form.Item>
                     <Form.Item
                         labelCol={{ span: 7 }}
-                        name={'new_confirm_password'}
+                        name={'newPasswordConfirm'}
                         label={t('users.fields.password_new_confirm')}
-                        dependencies={['new_password']}
+                        dependencies={['newPassword']}
                         rules={[
                             ...RULES_FORM.required,
                             ...RULES_FORM.password,
@@ -122,7 +106,7 @@ const ChangePasswordModalRender = ({ open, handleClose }: Props) => {
                                 validator(_, value) {
                                     if (
                                         !value ||
-                                        getFieldValue('new_password') === value
+                                        getFieldValue('newPassword') === value
                                     ) {
                                         return Promise.resolve();
                                     }

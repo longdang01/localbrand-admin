@@ -14,6 +14,7 @@ export const themeDarkConfig: ThemeConfig = {
         borderRadius: 5,
         colorLink: "#ffffff",
         colorLinkHover: "#000000",
+        fontFamily: "Montserrat",
     },
     components: {
         Layout: {
@@ -35,6 +36,8 @@ export const themeLightConfig: ThemeConfig = {
         borderRadius: 5,
         colorLink: "#000000",
         colorLinkHover: "#000000",
+        fontFamily: "Montserrat",
+
     },
     components: {
         Layout: {
@@ -57,6 +60,7 @@ export const themeBlueConfig: ThemeConfig = {
         colorBorder: "#e1e1e1",
         colorPrimary: '#284973',
         borderRadius: 5,
+        fontFamily: "Montserrat",
     },
     components: {
         Menu: {
@@ -101,6 +105,7 @@ export const themeBrownConfig: ThemeConfig = {
         colorBorder: "#e1e1e1",
         colorPrimary: '#48433d',
         borderRadius: 5,
+        fontFamily: "Montserrat",
     },
     components: {
         Menu: {

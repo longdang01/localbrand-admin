@@ -23,7 +23,8 @@ const LoginForm = ({}: Props) => {
         config: {
             onSuccess: (response) => {
                 // save to localStorage
-                storage.setStorage('user', JSON.stringify(response?.detail));
+                storage.setStorage('access_token', JSON.stringify(response?.user?.token));
+                storage.setStorage('role', JSON.stringify(response?.user?.role));
 
                 // notifications
                 notification.success({
@@ -59,7 +60,11 @@ const LoginForm = ({}: Props) => {
 
     const handleSubmit = async () => {
         const values = await form.validateFields();
-        login.mutate(values);
+        
+        login.mutate({
+            user: values,
+            page: 1
+        });
     };
 
     return (

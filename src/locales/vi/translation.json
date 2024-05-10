@@ -1,6 +1,6 @@
 {
     "app": {
-        "title": "VOSINT3",
+        "title": "FRAGILE",
         "click_here": "Bấm vào đây",
         "back": "Quay lại",
         "send_request": "Gửi yêu cầu",
@@ -37,6 +37,65 @@
             "confirm_delete_title": "Xác nhận xoá"
         }
     },
+    "dashboard": {
+        "title": "Bảng điều khiển"
+    },
+    "import": {
+        "title": "Nhập hàng",
+        "features": {
+            "product": "Sản Phẩm",
+            "import_bill": "Đơn Nhập",
+            "category_big": "Danh Mục Lớn",
+            "category_small": "Danh Mục Nhỏ",
+            "brand": "Thương Hiệu",
+            "supplier": "Nhà Cung Cấp",
+            "collection": "Bộ sưu tập"
+        },
+        "product": {
+            "meta_title": "Danh mục sản phẩm",
+            "title": "Sản phẩm",
+            "list": "Danh sách sản phẩm",
+            "create": "Thêm Sản phẩm",
+            "update": "Sửa Sản phẩm",
+            "delete": "Xoá Sản phẩm",
+            "delete_multi": "Xoá nhiều Sản phẩm",
+            "refresh": "Làm mới",
+            "search_here": "Tìm kiếm tại đây",
+            "fields": {
+                "serial": "STT",
+                "catalog_name": "Sản phẩm",
+                "catalog_description": "Mô tả",
+                "picture": "Ảnh",
+                "sort_order": "Thứ tự",
+                "action": "Tác vụ"
+            },
+            "confirm_delete": "Bạn có chắc chắn muốn xoá sản phẩm này không?",
+            "confirm_delete_multi": "Bạn có chắc chắn muốn xoá những sản phẩm này không?",
+            "confirm_delete_title": "Xác nhận xoá"
+        },
+        "category_big": {
+            "meta_title": "Danh mục lớn",
+            "title": "Danh mục lớn",
+            "list": "Danh sách danh mục lớn",
+            "create": "Thêm danh mục lớn",
+            "update": "Sửa danh mục lớn",
+            "delete": "Xoá danh mục lớn",
+            "delete_multi": "Xoá nhiều danh mục lớn",
+            "refresh": "Làm mới",
+            "search_here": "Tìm kiếm tại đây",
+            "fields": {
+                "serial": "STT",
+                "picture": "Ảnh",
+                "category_big_name": "Danh mục lớn",
+                "path": "Đường dẫn",
+                "action": "Tác vụ"
+            },
+            "confirm_delete": "Bạn có chắc chắn muốn xoá danh mục lớn này không?",
+            "confirm_delete_multi": "Bạn có chắc chắn muốn xoá những danh mục lớn này không?",
+            "confirm_delete_title": "Xác nhận xoá"
+        }
+    },
+
     "auth": {
         "login": {
             "title": "Đăng nhập",
