@@ -1,10 +1,14 @@
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
-export const PAGE_INDEX = 1;
-export const PAGE_SIZE = 10;
+export const PAGE_INDEX = "page_index";
+export const PAGE_SIZE = "page_size";
+export const SEARCH_DATA = "search_data";
 export const HTTP = "http";
 export const DEFAULT_UID_FILE_LIST = "-1";
 export const DEFAULT_NAME_FILE_LIST = "image.png";
 export const DEFAULT_STATUS_FILE_LIST = "done";
 export const ACCESS_TOKEN = "access_token";
 export const ROLE = "role";
-
+export const CONFIG_SLUGIFY = { locale: "vi", lower: true };
+export const MIN_PAGE_SIZE = "1";
+export const MAX_PAGE_SIZE = "1000000000";
+export const FORMAT_DATE = "DD/MM/YYYY";

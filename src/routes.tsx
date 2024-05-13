@@ -5,9 +5,6 @@ import {
     CATEGORY_SMALL_PATH,
     COLLECTION_PATH,
     DASHBOARD_PATH,
-    DATA_CATALOG_PATH,
-    DATA_STATISTICS_PATH,
-    DATA_WAREHOUSE_PATH,
     FORGOT_PASSWORD_PATH,
     IMPORT_BILL_PATH,
     LOGIN_PATH,
@@ -27,9 +24,6 @@ import { NotFoundPage } from './modules/errors/404';
 import { NotAuthorizationPage } from './modules/errors/403';
 import { ServerErrorPage } from './modules/errors/500';
 import ResetPassword from './modules/auth/reset-password/ResetPassword';
-import { DataCatalogPage } from './modules/data-warehouse-management/catalog';
-import { DataWarehousePage } from './modules/data-warehouse-management/warehouse';
-import { DataStatisticsPage } from './modules/data-warehouse-management/statistics';
 import { ProductPage } from './modules/import-management/product';
 import { DashboardPage } from './modules/dashboard';
 import { CategoryBigPage } from './modules/import-management/category-big';
@@ -45,23 +39,6 @@ const routers = createBrowserRouter([
         element: <AppLayout />,
         errorElement: <ErrorBoundary />,
         children: [
-            // {
-            //     path: HOME_PATH,
-            //     element: <Home />,
-            // },
-            {
-                path: DATA_CATALOG_PATH,
-                element: <DataCatalogPage />,
-            },
-            {
-                path: DATA_WAREHOUSE_PATH,
-                element: <DataWarehousePage />,
-            },
-            {
-                path: DATA_STATISTICS_PATH,
-                element: <DataStatisticsPage />,
-            },
-
             {
                 path: DASHBOARD_PATH,
                 element: <DashboardPage />

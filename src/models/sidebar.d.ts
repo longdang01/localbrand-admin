@@ -6,10 +6,11 @@ export interface LevelKeysProps {
 }
 
 export type NavigationItem = {
-    key: number;
+    key: number | string;
     label: string;
     icon: React.ReactNode | null;
     children: NavigationItem[];
+    url?: string;
 };
 
 export type GetMenuItemFn = (label: string, key: string, icon: React.ReactNode | null, children?: MenuItem[] | null) => MenuItem;

@@ -35,10 +35,10 @@ import { REACT_QUILL_FORMAT, REACT_QUILL_MODULES } from '@/utils/react-quill';
 import slugify from 'slugify';
 import { uploadFile } from '@/services/upload.service';
 import {
-    CACHE_CATEGORY_BIG,
-    useGetByIdCategoryBig,
-    useUpdateCategoryBig,
-} from '@/loaders/category-big.loader';
+    CACHE_BRAND,
+    useGetByIdBrand,
+    useUpdateBrand,
+} from '@/loaders/brand.loader';
 import { queryClient } from '@/lib/react-query';
 import { EditOutlined } from '@ant-design/icons';
 
@@ -48,7 +48,7 @@ interface Props {
 
 const { useToken } = theme;
 
-const EditCategoryBigModal = ({ id }: Props) => {
+const EditBrandModal = ({ id }: Props) => {
     const { t } = useTranslation('translation', { keyPrefix: 'import' });
     const { token } = useToken();
     const { open, close, isOpen } = useDisclosure();
@@ -57,7 +57,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
     const [textContent, setTextContent] = useState<string>('');
     const [loadingAvatar, setLoadingAvatar] = useState<boolean>(false);
 
-    const currentCategoryBig = useGetByIdCategoryBig({
+    const currentBrand = useGetByIdBrand({
         id,
         config: {
             onSuccess: (response) => {
@@ -84,14 +84,14 @@ const EditCategoryBigModal = ({ id }: Props) => {
         enabled: isOpen,
     });
 
-    const updateCategoryBig = useUpdateCategoryBig({
+    const updateBrand = useUpdateBrand({
         id: id,
         config: {
             onSuccess: (_) => {
-                queryClient.invalidateQueries([CACHE_CATEGORY_BIG.SEARCH]);
+                queryClient.invalidateQueries([CACHE_BRAND.SEARCH]);
 
                 notification.success({
-                    message: t('category_big.update_success'),
+                    message: t('brand.update_success'),
                 });
 
                 handleClose?.();
@@ -158,10 +158,10 @@ const EditCategoryBigModal = ({ id }: Props) => {
                 uid: DEFAULT_UID_FILE_LIST,
                 name: DEFAULT_NAME_FILE_LIST,
                 status: DEFAULT_STATUS_FILE_LIST,
-                url: currentCategoryBig?.data?.picture || noImage,
+                url: currentBrand?.data?.picture || noImage,
             },
         ]);
-        form.setFieldValue('picture', currentCategoryBig?.data?.picture);
+        form.setFieldValue('picture', currentBrand?.data?.picture);
     };
 
     const handleAutoFillPath = (e: any) => {
@@ -172,7 +172,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
         form.validateFields()
             .then(async (values) => {
                 values.picture =
-                    values?.picture || currentCategoryBig?.data?.picture;
+                    values?.picture || currentBrand?.data?.picture;
 
                 if (isUpload && values?.upload) {
                     let url = '';
@@ -192,14 +192,14 @@ const EditCategoryBigModal = ({ id }: Props) => {
                     values.picture = url;
                 }
 
-                updateCategoryBig.mutate({
+                updateBrand.mutate({
                     ...values,
                     description: textContent,
                 });
             })
             .catch(() => {
                 notification.warning({
-                    message: t('category_big.validate_form'),
+                    message: t('brand.validate_form'),
                 });
             });
     };
@@ -210,11 +210,11 @@ const EditCategoryBigModal = ({ id }: Props) => {
                 customHeader={true}
                 title={
                     <Typography.Text>
-                        {t('category_big.update')}
+                        {t('brand.update')}
                     </Typography.Text>
                 }
                 buttonRender={
-                    <Tooltip title={t('category_big.update')}>
+                    <Tooltip title={t('brand.update')}>
                         <Button
                             type="primary"
                             shape="circle"
@@ -227,9 +227,9 @@ const EditCategoryBigModal = ({ id }: Props) => {
                 open={isOpen}
                 handleCancel={handleClose}
                 handleSubmit={handleSubmit}
-                confirmLoading={loadingAvatar || updateCategoryBig?.isLoading}
+                confirmLoading={loadingAvatar || updateBrand?.isLoading}
             >
-                {currentCategoryBig?.isLoading ? (
+                {currentBrand?.isLoading ? (
                     <Flex align="center" justify="center" style={{ height: "100%"}}>
                         <div className="loader" style={{background: token.colorPrimary}}></div>
                     </Flex>
@@ -240,28 +240,16 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                 <FormItem
                                     labelCol={{ span: 7 }}
                                     label={t(
-                                        'category_big.fields.category_big_name',
+                                        'brand.fields.brand_name',
                                     )}
-                                    name="categoryName"
+                                    name="brandName"
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Input
                                         placeholder={t(
-                                            'category_big.fields.category_big_name',
+                                            'brand.fields.brand_name',
                                         )}
                                         onChange={handleAutoFillPath}
-                                    />
-                                </FormItem>
-                                <FormItem
-                                    labelCol={{ span: 7 }}
-                                    label={t('category_big.fields.path')}
-                                    name="path"
-                                    rules={[...RULES_FORM.required]}
-                                >
-                                    <Input
-                                        placeholder={t(
-                                            'category_big.fields.path',
-                                        )}
                                     />
                                 </FormItem>
                                 {!isUpload && (
@@ -272,7 +260,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                             <Typography.Text
                                                 style={{ marginLeft: 10 }}
                                             >
-                                                {t('category_big.url')}
+                                                {t('brand.url')}
                                             </Typography.Text>
                                         }
                                         rules={[
@@ -288,7 +276,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                                             return Promise.reject(
                                                                 new Error(
                                                                     t(
-                                                                        'category_big.image_url_invalid',
+                                                                        'brand.image_url_invalid',
                                                                     ),
                                                                 ),
                                                             );
@@ -301,7 +289,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                     >
                                         <Input
                                             onChange={handleChangeUrl}
-                                            placeholder={t('category_big.url')}
+                                            placeholder={t('brand.url')}
                                         />
                                     </Form.Item>
                                 )}
@@ -315,10 +303,10 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                         value={isUpload}
                                     >
                                         <Radio value={true}>
-                                            {t('category_big.upload')}
+                                            {t('brand.upload')}
                                         </Radio>
                                         <Radio value={false}>
-                                            {t('category_big.url')}
+                                            {t('brand.url')}
                                         </Radio>
                                     </Radio.Group>
                                 </Flex>
@@ -368,4 +356,4 @@ const EditCategoryBigModal = ({ id }: Props) => {
     );
 };
 
-export default EditCategoryBigModal;
+export default EditBrandModal;

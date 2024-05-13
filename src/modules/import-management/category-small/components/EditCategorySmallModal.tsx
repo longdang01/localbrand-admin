@@ -9,6 +9,7 @@ import {
     Radio,
     RadioChangeEvent,
     Row,
+    Select,
     Tooltip,
     Typography,
     UploadFile,
@@ -28,6 +29,8 @@ import {
     DEFAULT_NAME_FILE_LIST,
     DEFAULT_STATUS_FILE_LIST,
     DEFAULT_UID_FILE_LIST,
+    MAX_PAGE_SIZE,
+    MIN_PAGE_SIZE,
 } from '@/constants/config';
 import noImage from '@/assets/images/default/no-image.png';
 import ReactQuill from 'react-quill';
@@ -35,12 +38,14 @@ import { REACT_QUILL_FORMAT, REACT_QUILL_MODULES } from '@/utils/react-quill';
 import slugify from 'slugify';
 import { uploadFile } from '@/services/upload.service';
 import {
-    CACHE_CATEGORY_BIG,
-    useGetByIdCategoryBig,
-    useUpdateCategoryBig,
-} from '@/loaders/category-big.loader';
+    CACHE_CATEGORY_SMALL,
+    useGetByIdCategorySmall,
+    useUpdateCategorySmall,
+} from '@/loaders/category-small.loader';
 import { queryClient } from '@/lib/react-query';
 import { EditOutlined } from '@ant-design/icons';
+import { useSearchCategoriesBig } from '@/loaders/category-big.loader';
+import { CategoryBigProps } from '@/models/category-big';
 
 interface Props {
     id: string;
@@ -48,7 +53,7 @@ interface Props {
 
 const { useToken } = theme;
 
-const EditCategoryBigModal = ({ id }: Props) => {
+const EditCategorySmallModal = ({ id }: Props) => {
     const { t } = useTranslation('translation', { keyPrefix: 'import' });
     const { token } = useToken();
     const { open, close, isOpen } = useDisclosure();
@@ -57,12 +62,21 @@ const EditCategoryBigModal = ({ id }: Props) => {
     const [textContent, setTextContent] = useState<string>('');
     const [loadingAvatar, setLoadingAvatar] = useState<boolean>(false);
 
-    const currentCategoryBig = useGetByIdCategoryBig({
+    const searchCategoriesBig = useSearchCategoriesBig({
+        params: {
+            pageIndex: MIN_PAGE_SIZE,
+            pageSize: MAX_PAGE_SIZE,
+            searchData: '',
+        },
+    });
+
+    const currentCategorySmall = useGetByIdCategorySmall({
         id,
         config: {
             onSuccess: (response) => {
                 form.setFieldsValue({
                     ...response,
+                    category: response?.category?._id
                 });
                 form.setFieldValue('upload', '');
                 setTextContent(response?.description);
@@ -84,14 +98,14 @@ const EditCategoryBigModal = ({ id }: Props) => {
         enabled: isOpen,
     });
 
-    const updateCategoryBig = useUpdateCategoryBig({
+    const updateCategorySmall = useUpdateCategorySmall({
         id: id,
         config: {
             onSuccess: (_) => {
-                queryClient.invalidateQueries([CACHE_CATEGORY_BIG.SEARCH]);
+                queryClient.invalidateQueries([CACHE_CATEGORY_SMALL.SEARCH]);
 
                 notification.success({
-                    message: t('category_big.update_success'),
+                    message: t('category_small.update_success'),
                 });
 
                 handleClose?.();
@@ -158,10 +172,10 @@ const EditCategoryBigModal = ({ id }: Props) => {
                 uid: DEFAULT_UID_FILE_LIST,
                 name: DEFAULT_NAME_FILE_LIST,
                 status: DEFAULT_STATUS_FILE_LIST,
-                url: currentCategoryBig?.data?.picture || noImage,
+                url: currentCategorySmall?.data?.picture || noImage,
             },
         ]);
-        form.setFieldValue('picture', currentCategoryBig?.data?.picture);
+        form.setFieldValue('picture', currentCategorySmall?.data?.picture);
     };
 
     const handleAutoFillPath = (e: any) => {
@@ -172,7 +186,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
         form.validateFields()
             .then(async (values) => {
                 values.picture =
-                    values?.picture || currentCategoryBig?.data?.picture;
+                    values?.picture || currentCategorySmall?.data?.picture;
 
                 if (isUpload && values?.upload) {
                     let url = '';
@@ -192,14 +206,14 @@ const EditCategoryBigModal = ({ id }: Props) => {
                     values.picture = url;
                 }
 
-                updateCategoryBig.mutate({
+                updateCategorySmall.mutate({
                     ...values,
                     description: textContent,
                 });
             })
             .catch(() => {
                 notification.warning({
-                    message: t('category_big.validate_form'),
+                    message: t('category_small.validate_form'),
                 });
             });
     };
@@ -210,11 +224,11 @@ const EditCategoryBigModal = ({ id }: Props) => {
                 customHeader={true}
                 title={
                     <Typography.Text>
-                        {t('category_big.update')}
+                        {t('category_small.update')}
                     </Typography.Text>
                 }
                 buttonRender={
-                    <Tooltip title={t('category_big.update')}>
+                    <Tooltip title={t('category_small.update')}>
                         <Button
                             type="primary"
                             shape="circle"
@@ -227,11 +241,18 @@ const EditCategoryBigModal = ({ id }: Props) => {
                 open={isOpen}
                 handleCancel={handleClose}
                 handleSubmit={handleSubmit}
-                confirmLoading={loadingAvatar || updateCategoryBig?.isLoading}
+                confirmLoading={loadingAvatar || updateCategorySmall?.isLoading}
             >
-                {currentCategoryBig?.isLoading ? (
-                    <Flex align="center" justify="center" style={{ height: "100%"}}>
-                        <div className="loader" style={{background: token.colorPrimary}}></div>
+                {currentCategorySmall?.isLoading ? (
+                    <Flex
+                        align="center"
+                        justify="center"
+                        style={{ height: '100%' }}
+                    >
+                        <div
+                            className="loader"
+                            style={{ background: token.colorPrimary }}
+                        ></div>
                     </Flex>
                 ) : (
                     <Form form={form}>
@@ -240,27 +261,53 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                 <FormItem
                                     labelCol={{ span: 7 }}
                                     label={t(
-                                        'category_big.fields.category_big_name',
+                                        'category_small.fields.category_small_name',
                                     )}
-                                    name="categoryName"
+                                    name="subCategoryName"
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Input
                                         placeholder={t(
-                                            'category_big.fields.category_big_name',
+                                            'category_small.fields.category_small_name',
                                         )}
                                         onChange={handleAutoFillPath}
                                     />
                                 </FormItem>
                                 <FormItem
                                     labelCol={{ span: 7 }}
-                                    label={t('category_big.fields.path')}
+                                    label={t('category_small.fields.path')}
                                     name="path"
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Input
                                         placeholder={t(
-                                            'category_big.fields.path',
+                                            'category_small.fields.path',
+                                        )}
+                                    />
+                                </FormItem>
+                                <FormItem
+                                    labelCol={{ span: 7 }}
+                                    label={t(
+                                        'category_small.fields.category_big_name',
+                                    )}
+                                    name="category"
+                                    rules={[...RULES_FORM.required]}
+                                >
+                                    <Select
+
+                                        loading={
+                                            searchCategoriesBig?.isLoading ||
+                                            currentCategorySmall?.isLoading
+                                        }
+                                        value={currentCategorySmall?.data?.category?._id}
+                                        options={searchCategoriesBig?.data?.categories?.map(
+                                            (category: CategoryBigProps) => ({
+                                                label: category?.categoryName,
+                                                value: category?._id,
+                                            }),
+                                        )}
+                                        placeholder={t(
+                                            'category_small.fields.category_big_name',
                                         )}
                                     />
                                 </FormItem>
@@ -272,7 +319,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                             <Typography.Text
                                                 style={{ marginLeft: 10 }}
                                             >
-                                                {t('category_big.url')}
+                                                {t('category_small.url')}
                                             </Typography.Text>
                                         }
                                         rules={[
@@ -288,7 +335,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                                             return Promise.reject(
                                                                 new Error(
                                                                     t(
-                                                                        'category_big.image_url_invalid',
+                                                                        'category_small.image_url_invalid',
                                                                     ),
                                                                 ),
                                                             );
@@ -301,7 +348,9 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                     >
                                         <Input
                                             onChange={handleChangeUrl}
-                                            placeholder={t('category_big.url')}
+                                            placeholder={t(
+                                                'category_small.url',
+                                            )}
                                         />
                                     </Form.Item>
                                 )}
@@ -315,10 +364,10 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                         value={isUpload}
                                     >
                                         <Radio value={true}>
-                                            {t('category_big.upload')}
+                                            {t('category_small.upload')}
                                         </Radio>
                                         <Radio value={false}>
-                                            {t('category_big.url')}
+                                            {t('category_small.url')}
                                         </Radio>
                                     </Radio.Group>
                                 </Flex>
@@ -368,4 +417,4 @@ const EditCategoryBigModal = ({ id }: Props) => {
     );
 };
 
-export default EditCategoryBigModal;
+export default EditCategorySmallModal;

@@ -1,4 +1,6 @@
+import { PAGE_INDEX, PAGE_SIZE } from '@/constants/config';
 import { Pagination } from 'antd';
+import { useSearchParams } from 'react-router-dom';
 
 interface Props {
     current?: number;
@@ -8,19 +10,25 @@ interface Props {
 }
 
 const PaginationRender = ({
-    current,
     total,
     showQuickJumper = true,
     showSizeChanger = true,
 }: Props) => {
-    const handleChangePage = (_: number, __: number) => {};
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const handleChangePage = (pageIndex: number, pageSize: number) => {
+        searchParams.set(PAGE_INDEX, String(pageIndex));
+        searchParams.set(PAGE_SIZE, String(pageSize));
+        setSearchParams(searchParams)
+    };
 
     return (
         <>
             <Pagination
                 showQuickJumper={showQuickJumper}
                 showSizeChanger={showSizeChanger}
-                current={current}
+                current={Number(searchParams.get(PAGE_INDEX)) || 1}
+                pageSize={Number(searchParams.get(PAGE_SIZE)) || 10}
                 total={total}
                 onChange={handleChangePage}
             />

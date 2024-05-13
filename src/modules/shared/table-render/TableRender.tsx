@@ -9,11 +9,12 @@ interface Props {
     total?: number;
     isCheckBox?: boolean;
     rowKey?: string;
+    loading?: boolean;
 }
 
 const TYPE_SELECT = 'checkbox';
 
-const TableRender = ({ columns, data, total, isCheckBox = false, rowKey = "_id" }: Props) => {
+const TableRender = ({ columns, data, total, isCheckBox = false, rowKey = "_id", loading }: Props) => {
     const hideGotoRange1 = useMediaQuery({ minWidth: 600, maxWidth: 650 });
     const hideGotoRange2 = useMediaQuery({ minWidth: 750, maxWidth: 850 });
 
@@ -32,6 +33,7 @@ const TableRender = ({ columns, data, total, isCheckBox = false, rowKey = "_id" 
         <>
             <div className={classes.tableContainer}>
                 <Table
+                    loading={loading}
                     rowSelection={
                         isCheckBox
                             ? {
@@ -51,7 +53,6 @@ const TableRender = ({ columns, data, total, isCheckBox = false, rowKey = "_id" 
             </div>
             <Flex align="center" justify="end">
                 <PaginationRender
-                    current={1}
                     total={total}
                     showQuickJumper={(hideGotoRange1 || hideGotoRange2) ? false : true}
                 />

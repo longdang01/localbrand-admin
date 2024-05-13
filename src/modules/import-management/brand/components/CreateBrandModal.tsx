@@ -1,4 +1,7 @@
+import ModalRender from '@/modules/shared/modal/ModalRender';
+import { useDisclosure } from '@/utils/modal';
 import {
+    Button,
     Col,
     Flex,
     Form,
@@ -6,49 +9,50 @@ import {
     Radio,
     RadioChangeEvent,
     Row,
-    Upload,
+    Tooltip,
+    Typography,
     UploadFile,
     UploadProps,
     notification,
 } from 'antd';
-import ModalRender from '../../shared/modal/ModalRender';
-import { useTranslation } from 'react-i18next';
 import { useForm } from 'antd/es/form/Form';
-import { RcFile } from 'antd/es/upload';
-import { useState } from 'react';
-import classes from './users-modal.module.scss';
-import { CACHE_AUTH, useGetMe } from '@/loaders/auth.loader';
+import { useTranslation } from 'react-i18next';
+import { RULES_FORM } from '@/utils/validator';
+import FormItem from 'antd/es/form/FormItem';
+import { useEffect, useState } from 'react';
+import { checkImageExists } from '@/utils/image';
+import Upload, { RcFile } from 'antd/es/upload';
 import {
     DEFAULT_NAME_FILE_LIST,
     DEFAULT_STATUS_FILE_LIST,
     DEFAULT_UID_FILE_LIST,
 } from '@/constants/config';
-import { checkImageExists } from '@/utils/image';
-import { RULES_FORM } from '@/utils/validator';
+import noImage from '@/assets/images/default/no-image.png';
+import ReactQuill from 'react-quill';
+import { REACT_QUILL_FORMAT, REACT_QUILL_MODULES } from '@/utils/react-quill';
 import { uploadFile } from '@/services/upload.service';
-import defaultAvatar from '@/assets/images/avatars/default.png';
+import {
+    CACHE_BRAND,
+    useCreateBrand,
+} from '@/loaders/brand.loader';
 import { queryClient } from '@/lib/react-query';
-import { useUpdateStaff } from '@/loaders/staff.loader';
 
-interface Props {
-    open?: boolean;
-    handleClose?: () => void;
-}
-
-const UsersModalRender = ({ open, handleClose }: Props) => {
-    const { t } = useTranslation('translation');
+const CreateBrandModal = () => {
+    const { t } = useTranslation('translation', { keyPrefix: 'import' });
+    const { open, close, isOpen } = useDisclosure();
     const [form] = useForm();
-    const [isUpload, setIsUpload] = useState(true);
-    const [loadingAvatar, setLoadingAvatar] = useState(false);
+    const [isUpload, setIsUpload] = useState<boolean>(true);
+    const [textContent, setTextContent] = useState<string>('');
+    const [loadingAvatar, setLoadingAvatar] = useState<boolean>(false);
 
-    const updateProfile = useUpdateStaff({
+    const createBrand = useCreateBrand({
         config: {
             onSuccess: (_) => {
-                queryClient.invalidateQueries([CACHE_AUTH.AUTH_ME]);
-                
+                queryClient.invalidateQueries([CACHE_BRAND.SEARCH]);
+
                 notification.success({
-                    message: t("messages.update_success")
-                })
+                    message: t('brand.create_success'),
+                });
 
                 handleClose?.();
             },
@@ -60,60 +64,39 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
         },
     });
 
-    // binding value for form
-    const currentUsers = useGetMe({
-        config: {
-            onSuccess: (response) => {
-
-                if (response?.staff && response?.user) {
-                    handleBindingData({
-                        ...response?.staff,
-                        user: response?.user,
-                        username: response?.user?.username
-                    });
-                }
-            },
-            onError: (error: any) => {
-                notification.error({
-                    message: error?.message,
-                });
-            },
-        },
-        enabled: open
-    });
-
-    const handleBindingData = (data: any) => {
-        form.setFieldsValue({
-            ...data,
-        });
-
+    useEffect(() => {
+        form.resetFields();
+        setTextContent("");
         setFileList([
             {
                 uid: DEFAULT_UID_FILE_LIST,
                 name: DEFAULT_NAME_FILE_LIST,
                 status: DEFAULT_STATUS_FILE_LIST,
-                url: data?.picture ||
-                    defaultAvatar,
+                url: noImage,
             },
         ]);
+    }, [isOpen])
+
+    const handleOpen = () => {
+        open();
     };
 
-    // #region Handle Upload Image
+    const handleClose = () => {
+        close();
+    };
+
     const [fileList, setFileList] = useState<any[]>([]);
 
-    // change file upload
     const onChange: UploadProps['onChange'] = async ({
         fileList: newFileList,
     }) => {
         setFileList(newFileList);
     };
 
-    // delete file upload
     const onRemove: UploadProps['onRemove'] = async () => {
         setFileList([]);
     };
 
-    // show preview file upload
     const onPreview = async (file: UploadFile) => {
         let src = file.url as string;
         if (!src) {
@@ -128,7 +111,6 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
         const imgWindow = window.open(src);
         imgWindow?.document.write(image.outerHTML);
     };
-    // #endregion
 
     const handleChangeUrl = (e: any) => {
         setFileList([
@@ -136,7 +118,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                 uid: DEFAULT_UID_FILE_LIST,
                 name: DEFAULT_NAME_FILE_LIST,
                 status: DEFAULT_STATUS_FILE_LIST,
-                url: e?.target?.value || defaultAvatar,
+                url: e?.target?.value || noImage,
             },
         ]);
     };
@@ -144,11 +126,16 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
     const handleChangeRatio = (e: RadioChangeEvent) => {
         setIsUpload(e.target.value);
 
-        handleBindingData({
-            ...currentUsers?.data?.staff,
-            user: currentUsers?.data?.user,
-            username: currentUsers?.data?.user?.username
-        });
+        setFileList([
+            {
+                uid: DEFAULT_UID_FILE_LIST,
+                name: DEFAULT_NAME_FILE_LIST,
+                status: DEFAULT_STATUS_FILE_LIST,
+                url: noImage,
+            },
+        ]);
+
+        form.setFieldValue("picture", "");
     };
 
     const handleSubmit = () => {
@@ -174,72 +161,67 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                         break;
                 }
 
-                
-                updateProfile.mutate(
-                    {
-                        ...currentUsers?.data?.staff,
-                        user: currentUsers?.data?.user,
-                        ...values
-                    });
+                createBrand.mutate({
+                    ...values,
+                    description: textContent
+                });
             })
             .catch(() => {
-                notification.warning({ message: t('messages.validate_form') });
+                notification.warning({
+                    message: t('brand.validate_form'),
+                });
             });
     };
 
     return (
         <>
             <ModalRender
-                title={t('users.profile')}
-                height={'324px'}
                 customHeader={true}
-                open={open}
+                title={
+                    <Typography.Text>
+                        {t('brand.create')}
+                    </Typography.Text>
+                }
+                buttonRender={
+                    <Tooltip title={t('brand.create')}>
+                        <Button type="primary" onClick={handleOpen}>
+                            {t('brand.create')}
+                        </Button>
+                    </Tooltip>
+                }
+                open={isOpen}
                 handleCancel={handleClose}
                 handleSubmit={handleSubmit}
-                confirmLoading={updateProfile?.isLoading || loadingAvatar}
-                okText=''
+                confirmLoading={loadingAvatar || createBrand?.isLoading}
             >
                 <Form form={form}>
                     <Row gutter={[24, 24]}>
                         <Col span={24} md={16} lg={16}>
-                            <Form.Item
-                                labelCol={{ span: 6 }}
-                                name={'username'}
-                                label={t('users.fields.username')}
+                            <FormItem
+                                labelCol={{ span: 7 }}
+                                label={t(
+                                    'brand.fields.brand_name',
+                                )}
+                                name="brandName"
                                 rules={[...RULES_FORM.required]}
                             >
-                                <Input readOnly />
-                            </Form.Item>
-                            <Form.Item
-                                labelCol={{ span: 6 }}
-                                name={'staffName'}
-                                label={t('users.fields.full_name')}
-                                rules={[...RULES_FORM.full_name]}
-                            >
-                                <Input />
-                            </Form.Item>
-                            <Flex
-                                align="center"
-                                justify="end"
-                                style={{ marginBottom: 24 }}
-                            >
-                                <Radio.Group
-                                    onChange={handleChangeRatio}
-                                    value={isUpload}
-                                >
-                                    <Radio value={true}>
-                                        {t('users.fields.upload')}
-                                    </Radio>
-                                    <Radio value={false}>
-                                        {t('users.fields.url')}
-                                    </Radio>
-                                </Radio.Group>
-                            </Flex>
+                                <Input
+                                    placeholder={t(
+                                        'brand.fields.brand_name',
+                                    )}
+                                />
+                            </FormItem>
                             {!isUpload && (
                                 <Form.Item
-                                    labelCol={{ span: 6 }}
+                                    labelCol={{ span: 7 }}
                                     name={'picture'}
-                                    label={t('users.fields.url')}
+                                    label={
+                                        <Typography.Text
+                                            style={{ marginLeft: 10 }}
+                                        >
+                                            {t('brand.url')}
+                                        </Typography.Text>
+                                    }
                                     rules={[
                                         {
                                             validator: async (_, value) => {
@@ -253,7 +235,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                                                         return Promise.reject(
                                                             new Error(
                                                                 t(
-                                                                    'validators.image_url_invalid',
+                                                                    'brand.image_url_invalid',
                                                                 ),
                                                             ),
                                                         );
@@ -264,14 +246,34 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                                         },
                                     ]}
                                 >
-                                    <Input onChange={handleChangeUrl} />
+                                    <Input
+                                        onChange={handleChangeUrl}
+                                        placeholder={t('brand.url')}
+                                    />
                                 </Form.Item>
                             )}
+                            <Flex
+                                align="center"
+                                justify="end"
+                                style={{ marginBottom: 24 }}
+                            >
+                                <Radio.Group
+                                    onChange={handleChangeRatio}
+                                    value={isUpload}
+                                >
+                                    <Radio value={true}>
+                                        {t('brand.upload')}
+                                    </Radio>
+                                    <Radio value={false}>
+                                        {t('brand.url')}
+                                    </Radio>
+                                </Radio.Group>
+                            </Flex>
                         </Col>
                         <Col span={24} md={8} lg={8}>
                             <Form.Item name={'upload'}>
                                 <Upload
-                                    listType="picture-card"
+                                    listType="picture-circle"
                                     name="avatar"
                                     fileList={fileList}
                                     onChange={onChange}
@@ -283,18 +285,28 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                                     }}
                                     beforeUpload={() => false}
                                     accept="image/*"
-                                    className={classes.uploadContainer}
-                                    style={{ width: "100%", height: "100%"}}
+                                    className="upload-container"
+                                    style={{ width: '100%', height: '100%' }}
                                 >
                                     {fileList.length < 1 && '+ Upload'}
                                 </Upload>
                             </Form.Item>
                         </Col>
                     </Row>
+
+                    {/* RICH TEXT EDITOR */}
+                    <ReactQuill
+                        theme="snow"
+                        value={textContent}
+                        onChange={setTextContent}
+                        modules={REACT_QUILL_MODULES}
+                        formats={REACT_QUILL_FORMAT}
+                        style={{ height: 300 }}
+                    />
                 </Form>
             </ModalRender>
         </>
     );
 };
 
-export default UsersModalRender;
+export default CreateBrandModal;

@@ -1,11 +1,6 @@
 // FOR FEATURES
 const HOME_PATH = '/';
 
-const DATA_CATALOG_PATH = '/data-catalog';
-const DATA_WAREHOUSE_PATH = '/data-warehouse';
-const DATA_STATISTICS_PATH = '/data-statistics';
-
-
 const DASHBOARD_PATH = '/dashboard';
 const PRODUCT_PATH = '/product';
 const IMPORT_BILL_PATH = "/import-bill";
@@ -29,9 +24,6 @@ const RESET_PASSWORD_PATH = "/reset-password/:id/:token";
 
 export { 
     HOME_PATH,
-    DATA_CATALOG_PATH,
-    DATA_WAREHOUSE_PATH,
-    DATA_STATISTICS_PATH,
     
     DASHBOARD_PATH,
     PRODUCT_PATH,

@@ -65,7 +65,7 @@ const PageHeader = ({
         setThemeColor(
             COLORS?.find(
                 (color) =>
-                    color?.id == localStorage.getItem('V-OSINT3-Plus_color'),
+                    color?.id == localStorage.getItem('FRAGILE_color'),
             )?.config || themeLightConfig,
         );
     }, []);

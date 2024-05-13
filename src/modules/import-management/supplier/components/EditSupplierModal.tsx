@@ -35,10 +35,10 @@ import { REACT_QUILL_FORMAT, REACT_QUILL_MODULES } from '@/utils/react-quill';
 import slugify from 'slugify';
 import { uploadFile } from '@/services/upload.service';
 import {
-    CACHE_CATEGORY_BIG,
-    useGetByIdCategoryBig,
-    useUpdateCategoryBig,
-} from '@/loaders/category-big.loader';
+    CACHE_SUPPLIER,
+    useGetByIdSupplier,
+    useUpdateSupplier,
+} from '@/loaders/supplier.loader';
 import { queryClient } from '@/lib/react-query';
 import { EditOutlined } from '@ant-design/icons';
 
@@ -48,7 +48,7 @@ interface Props {
 
 const { useToken } = theme;
 
-const EditCategoryBigModal = ({ id }: Props) => {
+const EditSupplierModal = ({ id }: Props) => {
     const { t } = useTranslation('translation', { keyPrefix: 'import' });
     const { token } = useToken();
     const { open, close, isOpen } = useDisclosure();
@@ -57,7 +57,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
     const [textContent, setTextContent] = useState<string>('');
     const [loadingAvatar, setLoadingAvatar] = useState<boolean>(false);
 
-    const currentCategoryBig = useGetByIdCategoryBig({
+    const currentSupplier = useGetByIdSupplier({
         id,
         config: {
             onSuccess: (response) => {
@@ -84,14 +84,14 @@ const EditCategoryBigModal = ({ id }: Props) => {
         enabled: isOpen,
     });
 
-    const updateCategoryBig = useUpdateCategoryBig({
+    const updateSupplier = useUpdateSupplier({
         id: id,
         config: {
             onSuccess: (_) => {
-                queryClient.invalidateQueries([CACHE_CATEGORY_BIG.SEARCH]);
+                queryClient.invalidateQueries([CACHE_SUPPLIER.SEARCH]);
 
                 notification.success({
-                    message: t('category_big.update_success'),
+                    message: t('supplier.update_success'),
                 });
 
                 handleClose?.();
@@ -158,10 +158,10 @@ const EditCategoryBigModal = ({ id }: Props) => {
                 uid: DEFAULT_UID_FILE_LIST,
                 name: DEFAULT_NAME_FILE_LIST,
                 status: DEFAULT_STATUS_FILE_LIST,
-                url: currentCategoryBig?.data?.picture || noImage,
+                url: currentSupplier?.data?.picture || noImage,
             },
         ]);
-        form.setFieldValue('picture', currentCategoryBig?.data?.picture);
+        form.setFieldValue('picture', currentSupplier?.data?.picture);
     };
 
     const handleAutoFillPath = (e: any) => {
@@ -172,7 +172,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
         form.validateFields()
             .then(async (values) => {
                 values.picture =
-                    values?.picture || currentCategoryBig?.data?.picture;
+                    values?.picture || currentSupplier?.data?.picture;
 
                 if (isUpload && values?.upload) {
                     let url = '';
@@ -192,14 +192,14 @@ const EditCategoryBigModal = ({ id }: Props) => {
                     values.picture = url;
                 }
 
-                updateCategoryBig.mutate({
+                updateSupplier.mutate({
                     ...values,
                     description: textContent,
                 });
             })
             .catch(() => {
                 notification.warning({
-                    message: t('category_big.validate_form'),
+                    message: t('supplier.validate_form'),
                 });
             });
     };
@@ -209,12 +209,10 @@ const EditCategoryBigModal = ({ id }: Props) => {
             <ModalRender
                 customHeader={true}
                 title={
-                    <Typography.Text>
-                        {t('category_big.update')}
-                    </Typography.Text>
+                    <Typography.Text>{t('supplier.update')}</Typography.Text>
                 }
                 buttonRender={
-                    <Tooltip title={t('category_big.update')}>
+                    <Tooltip title={t('supplier.update')}>
                         <Button
                             type="primary"
                             shape="circle"
@@ -227,11 +225,18 @@ const EditCategoryBigModal = ({ id }: Props) => {
                 open={isOpen}
                 handleCancel={handleClose}
                 handleSubmit={handleSubmit}
-                confirmLoading={loadingAvatar || updateCategoryBig?.isLoading}
+                confirmLoading={loadingAvatar || updateSupplier?.isLoading}
             >
-                {currentCategoryBig?.isLoading ? (
-                    <Flex align="center" justify="center" style={{ height: "100%"}}>
-                        <div className="loader" style={{background: token.colorPrimary}}></div>
+                {currentSupplier?.isLoading ? (
+                    <Flex
+                        align="center"
+                        justify="center"
+                        style={{ height: '100%' }}
+                    >
+                        <div
+                            className="loader"
+                            style={{ background: token.colorPrimary }}
+                        ></div>
                     </Flex>
                 ) : (
                     <Form form={form}>
@@ -239,29 +244,53 @@ const EditCategoryBigModal = ({ id }: Props) => {
                             <Col span={24} md={16} lg={16}>
                                 <FormItem
                                     labelCol={{ span: 7 }}
-                                    label={t(
-                                        'category_big.fields.category_big_name',
-                                    )}
-                                    name="categoryName"
+                                    label={t('supplier.fields.supplier_name')}
+                                    name="supplierName"
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Input
                                         placeholder={t(
-                                            'category_big.fields.category_big_name',
+                                            'supplier.fields.supplier_name',
                                         )}
                                         onChange={handleAutoFillPath}
                                     />
                                 </FormItem>
                                 <FormItem
                                     labelCol={{ span: 7 }}
-                                    label={t('category_big.fields.path')}
-                                    name="path"
+                                    label={t('supplier.fields.address')}
+                                    name="address"
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Input
                                         placeholder={t(
-                                            'category_big.fields.path',
+                                            'supplier.fields.address',
                                         )}
+                                    />
+                                </FormItem>
+                                <FormItem
+                                    labelCol={{ span: 7 }}
+                                    label={t('supplier.fields.phone')}
+                                    name="phone"
+                                    rules={[
+                                        ...RULES_FORM.required,
+                                        ...RULES_FORM.phone,
+                                    ]}
+                                >
+                                    <Input
+                                        placeholder={t('supplier.fields.phone')}
+                                    />
+                                </FormItem>
+                                <FormItem
+                                    labelCol={{ span: 7 }}
+                                    label={t('supplier.fields.email')}
+                                    name="email"
+                                    rules={[
+                                        ...RULES_FORM.required,
+                                        ...RULES_FORM.email,
+                                    ]}
+                                >
+                                    <Input
+                                        placeholder={t('supplier.fields.email')}
                                     />
                                 </FormItem>
                                 {!isUpload && (
@@ -272,7 +301,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                             <Typography.Text
                                                 style={{ marginLeft: 10 }}
                                             >
-                                                {t('category_big.url')}
+                                                {t('supplier.url')}
                                             </Typography.Text>
                                         }
                                         rules={[
@@ -288,7 +317,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                                             return Promise.reject(
                                                                 new Error(
                                                                     t(
-                                                                        'category_big.image_url_invalid',
+                                                                        'supplier.image_url_invalid',
                                                                     ),
                                                                 ),
                                                             );
@@ -301,7 +330,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                     >
                                         <Input
                                             onChange={handleChangeUrl}
-                                            placeholder={t('category_big.url')}
+                                            placeholder={t('supplier.url')}
                                         />
                                     </Form.Item>
                                 )}
@@ -315,10 +344,10 @@ const EditCategoryBigModal = ({ id }: Props) => {
                                         value={isUpload}
                                     >
                                         <Radio value={true}>
-                                            {t('category_big.upload')}
+                                            {t('supplier.upload')}
                                         </Radio>
                                         <Radio value={false}>
-                                            {t('category_big.url')}
+                                            {t('supplier.url')}
                                         </Radio>
                                     </Radio.Group>
                                 </Flex>
@@ -359,7 +388,7 @@ const EditCategoryBigModal = ({ id }: Props) => {
                             onChange={setTextContent}
                             modules={REACT_QUILL_MODULES}
                             formats={REACT_QUILL_FORMAT}
-                            style={{ height: 300 }}
+                            style={{ height: 200 }}
                         />
                     </Form>
                 )}
@@ -368,4 +397,4 @@ const EditCategoryBigModal = ({ id }: Props) => {
     );
 };
 
-export default EditCategoryBigModal;
+export default EditSupplierModal;

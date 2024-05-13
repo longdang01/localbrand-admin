@@ -35,7 +35,7 @@ const ConfirmRender = ({
             onOk: handleConfirm,
             onCancel: handleCancel,
             okText: okText || t("confirm.delete"),
-            cancelText: cancelText || t("confirm.cancel")
+            cancelText: cancelText || t("confirm.cancel"),
           });
     }
 

@@ -9,6 +9,7 @@ import {
     Radio,
     RadioChangeEvent,
     Row,
+    Select,
     Tooltip,
     Typography,
     UploadFile,
@@ -27,6 +28,8 @@ import {
     DEFAULT_NAME_FILE_LIST,
     DEFAULT_STATUS_FILE_LIST,
     DEFAULT_UID_FILE_LIST,
+    MAX_PAGE_SIZE,
+    MIN_PAGE_SIZE,
 } from '@/constants/config';
 import noImage from '@/assets/images/default/no-image.png';
 import ReactQuill from 'react-quill';
@@ -34,12 +37,14 @@ import { REACT_QUILL_FORMAT, REACT_QUILL_MODULES } from '@/utils/react-quill';
 import slugify from 'slugify';
 import { uploadFile } from '@/services/upload.service';
 import {
-    CACHE_CATEGORY_BIG,
-    useCreateCategoryBig,
-} from '@/loaders/category-big.loader';
+    CACHE_CATEGORY_SMALL,
+    useCreateCategorySmall,
+} from '@/loaders/category-small.loader';
 import { queryClient } from '@/lib/react-query';
+import { useSearchCategoriesBig } from '@/loaders/category-big.loader';
+import { CategoryBigProps } from '@/models/category-big';
 
-const CreateCategoryBigModal = () => {
+const CreateCategorySmallModal = () => {
     const { t } = useTranslation('translation', { keyPrefix: 'import' });
     const { open, close, isOpen } = useDisclosure();
     const [form] = useForm();
@@ -47,13 +52,21 @@ const CreateCategoryBigModal = () => {
     const [textContent, setTextContent] = useState<string>('');
     const [loadingAvatar, setLoadingAvatar] = useState<boolean>(false);
 
-    const createCategoryBig = useCreateCategoryBig({
+    const searchCategoriesBig = useSearchCategoriesBig({
+        params: {
+            pageIndex: MIN_PAGE_SIZE,
+            pageSize: MAX_PAGE_SIZE,
+            searchData: '',
+        },
+    });
+
+    const createCategorySmall = useCreateCategorySmall({
         config: {
             onSuccess: (_) => {
-                queryClient.invalidateQueries([CACHE_CATEGORY_BIG.SEARCH]);
+                queryClient.invalidateQueries([CACHE_CATEGORY_SMALL.SEARCH]);
 
                 notification.success({
-                    message: t('category_big.create_success'),
+                    message: t('category_small.create_success'),
                 });
 
                 handleClose?.();
@@ -68,7 +81,7 @@ const CreateCategoryBigModal = () => {
 
     useEffect(() => {
         form.resetFields();
-        setTextContent("");
+        setTextContent('');
         setFileList([
             {
                 uid: DEFAULT_UID_FILE_LIST,
@@ -77,7 +90,7 @@ const CreateCategoryBigModal = () => {
                 url: noImage,
             },
         ]);
-    }, [isOpen])
+    }, [isOpen]);
 
     const handleOpen = () => {
         open();
@@ -137,7 +150,7 @@ const CreateCategoryBigModal = () => {
             },
         ]);
 
-        form.setFieldValue("picture", "");
+        form.setFieldValue('picture', '');
     };
 
     const handleAutoFillPath = (e: any) => {
@@ -167,14 +180,14 @@ const CreateCategoryBigModal = () => {
                         break;
                 }
 
-                createCategoryBig.mutate({
+                createCategorySmall.mutate({
                     ...values,
-                    description: textContent
+                    description: textContent,
                 });
             })
             .catch(() => {
                 notification.warning({
-                    message: t('category_big.validate_form'),
+                    message: t('category_small.validate_form'),
                 });
             });
     };
@@ -185,20 +198,20 @@ const CreateCategoryBigModal = () => {
                 customHeader={true}
                 title={
                     <Typography.Text>
-                        {t('category_big.create')}
+                        {t('category_small.create')}
                     </Typography.Text>
                 }
                 buttonRender={
-                    <Tooltip title={t('category_big.create')}>
+                    <Tooltip title={t('category_small.create')}>
                         <Button type="primary" onClick={handleOpen}>
-                            {t('category_big.create')}
+                            {t('category_small.create')}
                         </Button>
                     </Tooltip>
                 }
                 open={isOpen}
                 handleCancel={handleClose}
                 handleSubmit={handleSubmit}
-                confirmLoading={loadingAvatar || createCategoryBig?.isLoading}
+                confirmLoading={loadingAvatar || createCategorySmall?.isLoading}
             >
                 <Form form={form}>
                     <Row gutter={[24, 24]}>
@@ -206,26 +219,48 @@ const CreateCategoryBigModal = () => {
                             <FormItem
                                 labelCol={{ span: 7 }}
                                 label={t(
-                                    'category_big.fields.category_big_name',
+                                    'category_small.fields.category_small_name',
                                 )}
-                                name="categoryName"
+                                name="subCategoryName"
                                 rules={[...RULES_FORM.required]}
                             >
                                 <Input
                                     placeholder={t(
-                                        'category_big.fields.category_big_name',
+                                        'category_small.fields.category_small_name',
                                     )}
                                     onChange={handleAutoFillPath}
                                 />
                             </FormItem>
                             <FormItem
                                 labelCol={{ span: 7 }}
-                                label={t('category_big.fields.path')}
+                                label={t('category_small.fields.path')}
                                 name="path"
                                 rules={[...RULES_FORM.required]}
                             >
                                 <Input
-                                    placeholder={t('category_big.fields.path')}
+                                    placeholder={t(
+                                        'category_small.fields.path',
+                                    )}
+                                />
+                            </FormItem>
+                            <FormItem
+                                labelCol={{ span: 7 }}
+                                label={t(
+                                    'category_small.fields.category_big_name',
+                                )}
+                                name="category"
+                                rules={[...RULES_FORM.required]}
+                            >
+                                <Select
+                                    options={searchCategoriesBig?.data?.categories?.map(
+                                        (category: CategoryBigProps) => ({
+                                            label: category?.categoryName,
+                                            value: category?._id,
+                                        }),
+                                    )}
+                                    placeholder={t(
+                                        'category_small.fields.category_big_name',
+                                    )}
                                 />
                             </FormItem>
                             {!isUpload && (
@@ -236,7 +271,7 @@ const CreateCategoryBigModal = () => {
                                         <Typography.Text
                                             style={{ marginLeft: 10 }}
                                         >
-                                            {t('category_big.url')}
+                                            {t('category_small.url')}
                                         </Typography.Text>
                                     }
                                     rules={[
@@ -252,7 +287,7 @@ const CreateCategoryBigModal = () => {
                                                         return Promise.reject(
                                                             new Error(
                                                                 t(
-                                                                    'category_big.image_url_invalid',
+                                                                    'category_small.image_url_invalid',
                                                                 ),
                                                             ),
                                                         );
@@ -265,7 +300,7 @@ const CreateCategoryBigModal = () => {
                                 >
                                     <Input
                                         onChange={handleChangeUrl}
-                                        placeholder={t('category_big.url')}
+                                        placeholder={t('category_small.url')}
                                     />
                                 </Form.Item>
                             )}
@@ -279,10 +314,10 @@ const CreateCategoryBigModal = () => {
                                     value={isUpload}
                                 >
                                     <Radio value={true}>
-                                        {t('category_big.upload')}
+                                        {t('category_small.upload')}
                                     </Radio>
                                     <Radio value={false}>
-                                        {t('category_big.url')}
+                                        {t('category_small.url')}
                                     </Radio>
                                 </Radio.Group>
                             </Flex>
@@ -326,4 +361,4 @@ const CreateCategoryBigModal = () => {
     );
 };
 
-export default CreateCategoryBigModal;
+export default CreateCategorySmallModal;

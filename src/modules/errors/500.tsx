@@ -15,7 +15,7 @@ export const ServerErrorPage: React.FC = () => {
   }
 
   useEffect(() => {
-    document.title = "Lỗi hệ thống | V-OSINT3-Plus";
+    document.title = "Lỗi hệ thống | FRAGILE";
   }, []);
   
   return (

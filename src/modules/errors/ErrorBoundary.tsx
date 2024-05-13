@@ -4,7 +4,7 @@ import {
     isRouteErrorResponse,
     useRouteError,
 } from 'react-router-dom';
-import { NOT_AUTHORIZATION_PATH, NOT_FOUND_PATH } from '@/paths';
+import { NOT_AUTHORIZATION_PATH, NOT_FOUND_PATH, SERVER_ERROR_PATH } from '@/paths';
 import { HttpStatusCode } from 'axios';
 
 export const ErrorBoundary: React.FC = () => {
@@ -18,5 +18,5 @@ export const ErrorBoundary: React.FC = () => {
                 return <Navigate to={NOT_AUTHORIZATION_PATH} />;
         }
     }
-    return <Navigate to={NOT_FOUND_PATH} />;
+    return <Navigate to={SERVER_ERROR_PATH} />;
 };
