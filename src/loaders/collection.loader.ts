@@ -14,14 +14,17 @@ export const CACHE_COLLECTION = {
 export const useSearchCollections = ({
     params,
     config,
+    enabled
 }: {
     params: AxiosRequestConfig['params'];
     config?: QueryConfig<typeof search>;
+    enabled?: boolean;
 }) => {
     return useQuery<ExtractFnReturnType<typeof search>>({
         ...config,
         queryKey: [CACHE_COLLECTION.SEARCH, params],
         queryFn: () => search({ ...params }),
+        enabled: enabled
     });
 };
 

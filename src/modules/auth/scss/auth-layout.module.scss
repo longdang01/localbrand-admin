@@ -6,6 +6,29 @@
     height: 100vh;
     overflow: hidden;
 
+    .license {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        & > div {
+            margin-top: .5rem;
+            font-weight: 500;
+        }
+    }
+
+    .logo-mobile {
+
+        & > div {
+            margin-bottom: 5rem;
+            font-size: 28px;
+            font-weight: bold;
+
+        }
+    }
+
+
     &::before {
         content: "";
         position: absolute;
@@ -37,6 +60,15 @@
         background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */
         background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+    }
+
+    @media screen and (max-width: 1200px) {
+
+        &::before,
+        &::after {
+            display: none;
+        }
+        
     }
 
     .display-container {
@@ -85,6 +117,7 @@
                 }
 
                 .center {
+                    position: relative;
                     width: 450px;
                     height: 450px;
                     border-radius: 50%;

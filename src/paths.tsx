@@ -3,14 +3,13 @@ const HOME_PATH = '/';
 
 const DASHBOARD_PATH = '/dashboard';
 const PRODUCT_PATH = '/product';
+const PRODUCT_DETAIL_PATH = '/product/:path';
 const IMPORT_BILL_PATH = "/import-bill";
 const CATEGORY_BIG_PATH = "/category-big";
 const CATEGORY_SMALL_PATH = "/category-small";
 const BRAND_PATH = "/brand";
 const SUPPLIER_PATH = "/supplier";
 const COLLECTION_PATH = "/collection";
-
-
 
 // ERRORS
 const NOT_FOUND_PATH = "/not-found";
@@ -27,6 +26,8 @@ export {
     
     DASHBOARD_PATH,
     PRODUCT_PATH,
+    PRODUCT_DETAIL_PATH,
+
     IMPORT_BILL_PATH,
     CATEGORY_BIG_PATH,
     CATEGORY_SMALL_PATH,

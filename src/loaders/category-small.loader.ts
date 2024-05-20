@@ -14,14 +14,18 @@ export const CACHE_CATEGORY_SMALL = {
 export const useSearchCategoriesSmall = ({
     params,
     config,
+    enabled
+
 }: {
     params: AxiosRequestConfig['params'];
     config?: QueryConfig<typeof search>;
+    enabled?: boolean
 }) => {
     return useQuery<ExtractFnReturnType<typeof search>>({
         ...config,
         queryKey: [CACHE_CATEGORY_SMALL.SEARCH, params],
         queryFn: () => search({ ...params }),
+        enabled: enabled
     });
 };
 

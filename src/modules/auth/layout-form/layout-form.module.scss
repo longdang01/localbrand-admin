@@ -3,32 +3,106 @@
 
 .container {
     height: 100vh;
-    margin-top: 3rem;
+    // margin-top: 3rem;
 
-    .inner {
-        position: relative;
-        width: 60%;
-        padding: 3rem 0;
-        border: 1px solid #d6d6d6;
-        border-radius: 10px;
-        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    .license {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
 
-        &::before {
-            content: "";
-            position: absolute;
-            top: -80px;
-            right: -80px;
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            // background: #f46b45;  /* fallback for old browsers */
-            // background: -webkit-linear-gradient(to right, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
-            // background: linear-gradient(to right, #eea849, #f46b45); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: #373B44;  /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            opacity: .8;
+        & > div {
+            margin-top: .5rem;
+            font-weight: 500;
         }
+    }
+
+    .logo-mobile {
+
+        & > div {
+            margin-bottom: 5rem;
+            font-size: 28px;
+            font-weight: bold;
+
+        }
+    }
+    
+    .inner {
+        // position: relative;
+        width: 60%;
+        padding: 2rem 0;
+        // border: 1px solid #d6d6d6;
+        // border-radius: 10px;
+        // box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+        @media screen and (max-width: 1200px) {
+
+            & {
+                position: relative;
+                width: 70%;
+                padding: 3rem 0;
+                border: 1px solid #f0f0f0;
+                border-radius: 10px;
+                box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+                background: rgba(255, 255, 255, .8);
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -80px;
+                right: -80px;
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                // background: #f46b45;  /* fallback for old browsers */
+                // background: -webkit-linear-gradient(to right, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
+                // background: linear-gradient(to right, #eea849, #f46b45); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                background: #373B44;  /* fallback for old browsers */
+                background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */
+                background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                opacity: .8;
+                z-index: -1;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -80px;
+                left: -80px;
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                background: #FDC830;  /* fallback for old browsers */
+                background: -webkit-linear-gradient(to right, #F37335, #FDC830);  /* Chrome 10-25, Safari 5.1-6 */
+                background: linear-gradient(to right, #F37335, #FDC830); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                opacity: .8;
+                z-index: -1;
+            }
+        }
+
+        @media screen and (max-width: 500px) {
+            & {
+                width: 95%;
+            }
+        }
+
+        // &::before {
+        //     content: "";
+        //     position: absolute;
+        //     top: -80px;
+        //     right: -80px;
+        //     width: 150px;
+        //     height: 150px;
+        //     border-radius: 50%;
+        //     // background: #f46b45;  /* fallback for old browsers */
+        //     // background: -webkit-linear-gradient(to right, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
+        //     // background: linear-gradient(to right, #eea849, #f46b45); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        //     background: #373B44;  /* fallback for old browsers */
+        //     background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */
+        //     background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        //     opacity: .8;
+        // }
 
         .logo-title {
             font-size: 2.8rem;

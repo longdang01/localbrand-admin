@@ -1,8 +1,13 @@
 import lazyLoad from '@/utils/loadable';
 
 const ProductPage = lazyLoad(
-    () => import('./views/Product'),
+    () => import('./Product'),
     (module) => module.default,
 );
 
-export { ProductPage };
+const ProductDetailPage = lazyLoad(
+    () => import('./ProductDetail'),
+    (module) => module.default,
+);
+
+export { ProductPage, ProductDetailPage };

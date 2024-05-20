@@ -10,6 +10,7 @@ import {
     LOGIN_PATH,
     NOT_AUTHORIZATION_PATH,
     NOT_FOUND_PATH,
+    PRODUCT_DETAIL_PATH,
     PRODUCT_PATH,
     RESET_PASSWORD_PATH,
     SERVER_ERROR_PATH,
@@ -24,13 +25,13 @@ import { NotFoundPage } from './modules/errors/404';
 import { NotAuthorizationPage } from './modules/errors/403';
 import { ServerErrorPage } from './modules/errors/500';
 import ResetPassword from './modules/auth/reset-password/ResetPassword';
-import { ProductPage } from './modules/import-management/product';
 import { DashboardPage } from './modules/dashboard';
 import { CategoryBigPage } from './modules/import-management/category-big';
-import { CategorySmallPage } from './modules/import-management/category-small';
-import { BrandPage } from './modules/import-management/brand';
-import { CollectionPage } from './modules/import-management/collection';
 import { ImportBillPage } from './modules/import-management/import-bill';
+import { BrandPage } from './modules/import-management/brand';
+import { CategorySmallPage } from './modules/import-management/category-small';
+import { CollectionPage } from './modules/import-management/collection';
+import { ProductDetailPage, ProductPage } from './modules/import-management/product';
 import { SupplierPage } from './modules/import-management/supplier';
 
 const routers = createBrowserRouter([
@@ -66,6 +67,10 @@ const routers = createBrowserRouter([
             {
                 path: PRODUCT_PATH,
                 element: <ProductPage />,
+            },
+            {
+                path: PRODUCT_DETAIL_PATH,
+                element: <ProductDetailPage />,
             },
             {
                 path: SUPPLIER_PATH,

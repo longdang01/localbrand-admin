@@ -1,9 +1,9 @@
 import { ExtractFnReturnType, MutationConfig, QueryConfig } from "@/lib/react-query";
-import { create, getById, remove, search, update } from "@/services/brand.service";
+import { create, getById, remove, search, update } from "@/services/product.service";
 import { AxiosRequestConfig } from "axios";
 import { useMutation, useQuery } from "react-query";
 
-export const CACHE_BRAND = {
+export const CACHE_PRODUCT = {
     SEARCH: 'SEARCH',
     GET_BY_ID: 'GET_BY_ID',
     CREATE: 'CREATE',
@@ -11,24 +11,21 @@ export const CACHE_BRAND = {
     REMOVE: 'REMOVE',
 };
 
-export const useSearchBrands = ({
+export const useSearchProducts = ({
     params,
     config,
-    enabled
 }: {
     params: AxiosRequestConfig['params'];
     config?: QueryConfig<typeof search>;
-    enabled?: boolean;
 }) => {
     return useQuery<ExtractFnReturnType<typeof search>>({
         ...config,
-        queryKey: [CACHE_BRAND.SEARCH, params],
+        queryKey: [CACHE_PRODUCT.SEARCH, params],
         queryFn: () => search({ ...params }),
-        enabled: enabled
     });
 };
 
-export const useGetByIdBrand = ({
+export const useGetByIdProduct = ({
     id,
     config,
     enabled,
@@ -39,13 +36,13 @@ export const useGetByIdBrand = ({
 }) => {
     return useQuery<ExtractFnReturnType<typeof getById>>({
         ...config,
-        queryKey: [CACHE_BRAND.GET_BY_ID, id],
+        queryKey: [CACHE_PRODUCT.GET_BY_ID, id],
         queryFn: () => getById(id),
         enabled: enabled
     });
 };
 
-export const useCreateBrand = ({
+export const useCreateProduct = ({
     config,
 }: {
     config?: MutationConfig<typeof create>;
@@ -59,7 +56,7 @@ export const useCreateBrand = ({
     });
 };
 
-export const useUpdateBrand = ({
+export const useUpdateProduct = ({
     id,
     config,
 }: {
@@ -75,7 +72,7 @@ export const useUpdateBrand = ({
     });
 };
 
-export const useRemoveBrand = ({
+export const useRemoveProduct = ({
     config,
 }: {
     config?: MutationConfig<typeof remove>;

@@ -12,7 +12,8 @@ import { LevelKeysProps, NavigationItem } from '@/models/sidebar';
 import { useSidebar } from '@/stores/sidebar.store';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BRAND_PATH, CATEGORY_BIG_PATH, CATEGORY_SMALL_PATH, COLLECTION_PATH, DASHBOARD_PATH, IMPORT_BILL_PATH, PRODUCT_PATH, SUPPLIER_PATH } from '@/paths';
-import { FiActivity } from "react-icons/fi";
+import { GoDot } from "react-icons/go";
+
 const { useToken } = theme;
 
 const MenuFunctions = () => {
@@ -78,43 +79,43 @@ const MenuFunctions = () => {
                 {
                     key: PRODUCT_PATH,
                     label: t('import.features.product'),
-                    icon: <FiActivity />,
+                    icon: <GoDot />,
                     children: [],
                 },
                 {
                     key: IMPORT_BILL_PATH,
                     label: t('import.features.import_bill'),
-                    icon: <FiActivity />,
+                    icon: <GoDot />,
                     children: [],
                 },
                 {
                     key: CATEGORY_BIG_PATH,
                     label: t('import.features.category_big'),
-                    icon: <FiActivity />,
+                    icon: <GoDot />,
                     children: [],
                 },
                 {
                     key: CATEGORY_SMALL_PATH,
                     label: t('import.features.category_small'),
-                    icon: <FiActivity />,
+                    icon: <GoDot />,
                     children: [],
                 },
                 {
                     key: BRAND_PATH,
                     label: t('import.features.brand'),
-                    icon: <FiActivity />,
+                    icon: <GoDot />,
                     children: [],
                 },
                 {
                     key: SUPPLIER_PATH,
                     label: t('import.features.supplier'),
-                    icon: <FiActivity />,
+                    icon: <GoDot />,
                     children: [],
                 },
                 {
                     key: COLLECTION_PATH,
                     label: t('import.features.collection'),
-                    icon: <FiActivity />,
+                    icon: <GoDot />,
                     children: [],
                 },
             ],
