@@ -32,8 +32,7 @@ body {
     label,
     ul,
     li,
-    span,
-    div {
+    span {
         font-weight: 600;
     }
 }
@@ -83,36 +82,36 @@ body {
 }
 
 .btn-delete {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     color: red;
 
-    span {
+    &:not([disabled]) span {
         color: red;
     }
 
-    &:hover span {
+    &:not([disabled])hover span {
         color: red !important;
     }
 
-    &:hover {
+    &:not([disabled]):hover {
         border-color: red !important;
     }
 }
 
 .btn-detail,
 .btn-gallery {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     color: orange;
-    
-    span {
+
+    &:not([disabled]) span {
         color: orange;
     }
 
-    &:hover span {
+    &:not([disabled]):hover span {
         color: orange !important;
     }
 
-    &:hover {
+    &:not([disabled]):hover {
         border-color: orange !important;
     }
 }
@@ -211,13 +210,23 @@ body {
     aspect-ratio: 1;
     border-radius: 50%;
     background: #006ef6;
-    --_m: 
-      conic-gradient(#0000 10%,#000),
-      linear-gradient(#000 0 0) content-box;
+    --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
     -webkit-mask: var(--_m);
-            mask: var(--_m);
+    mask: var(--_m);
     -webkit-mask-composite: source-out;
-            mask-composite: subtract;
+    mask-composite: subtract;
     animation: l3 1s infinite linear;
-  }
-  @keyframes l3 {to{transform: rotate(1turn)}}
+}
+@keyframes l3 {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.text-success {
+    color: #16a34a;
+}
+
+.text-danger {
+    color: red;
+}

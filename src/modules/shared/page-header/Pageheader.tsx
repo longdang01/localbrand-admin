@@ -32,7 +32,7 @@ interface Props {
     pageBreadcrumbs?:
         | Partial<BreadcrumbItemType & BreadcrumbSeparatorType>[]
         | undefined;
-    title?: string;
+    title?: string | React.ReactNode;
     children?: ReactNode;
     isContainTitle?: boolean;
 }

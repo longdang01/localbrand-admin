@@ -1,5 +1,5 @@
 import { ExtractFnReturnType, MutationConfig, QueryConfig } from "@/lib/react-query";
-import { create, getById, remove, search, update } from "@/services/product.service";
+import { create, getById, getByPath, remove, search, update } from "@/services/product.service";
 import { AxiosRequestConfig } from "axios";
 import { useMutation, useQuery } from "react-query";
 
@@ -9,6 +9,7 @@ export const CACHE_PRODUCT = {
     CREATE: 'CREATE',
     UPDATE: 'UPDATE',
     REMOVE: 'REMOVE',
+    GET_BY_PATH: 'PRODUCT_GET_BY_PATH',
 };
 
 export const useSearchProducts = ({
@@ -22,6 +23,20 @@ export const useSearchProducts = ({
         ...config,
         queryKey: [CACHE_PRODUCT.SEARCH, params],
         queryFn: () => search({ ...params }),
+    });
+};
+
+export const useGetByPath = ({
+    params,
+    config,
+}: {
+    params: AxiosRequestConfig['params'];
+    config?: QueryConfig<typeof getByPath>;
+}) => {
+    return useQuery<ExtractFnReturnType<typeof getByPath>>({
+        ...config,
+        queryKey: [CACHE_PRODUCT.GET_BY_PATH, params],
+        queryFn: () => getByPath({ ...params }),
     });
 };
 

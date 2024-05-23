@@ -2,7 +2,7 @@ import { Layout, Menu, MenuProps, theme } from 'antd';
 import classes from '../../sidebar.module.scss';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FolderOpenOutlined, HomeOutlined } from '@ant-design/icons';
+import { FolderOpenOutlined, HomeOutlined, MoneyCollectOutlined, ProductOutlined, SettingOutlined } from '@ant-design/icons';
 import {
     convertToMenuItems,
     getItem,
@@ -11,7 +11,7 @@ import {
 import { LevelKeysProps, NavigationItem } from '@/models/sidebar';
 import { useSidebar } from '@/stores/sidebar.store';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { BRAND_PATH, CATEGORY_BIG_PATH, CATEGORY_SMALL_PATH, COLLECTION_PATH, DASHBOARD_PATH, IMPORT_BILL_PATH, PRODUCT_PATH, SUPPLIER_PATH } from '@/paths';
+import { BRAND_PATH, CATEGORY_BIG_PATH, CATEGORY_SMALL_PATH, COLLECTION_PATH, CUSTOMER_PATH, DASHBOARD_PATH, STAFF_PATH, IMPORT_BILL_PATH, LOOKBOOK_PATH, ORDER_PATH, PRODUCT_PATH, SLIDE_PATH, SUPPLIER_PATH } from '@/paths';
 import { GoDot } from "react-icons/go";
 
 const { useToken } = theme;
@@ -35,32 +35,7 @@ const MenuFunctions = () => {
     }, [collapsed])
 
     const handleNavigate = (e: any) => {
-        switch(e?.key) {
-            case DASHBOARD_PATH:
-                navigate(DASHBOARD_PATH);
-                break;
-            case PRODUCT_PATH:
-                navigate(PRODUCT_PATH);
-                break;
-            case IMPORT_BILL_PATH:
-                navigate(IMPORT_BILL_PATH);
-                break;
-            case CATEGORY_BIG_PATH:
-                navigate(CATEGORY_BIG_PATH);
-                break;
-            case CATEGORY_SMALL_PATH:
-                navigate(CATEGORY_SMALL_PATH);
-                break;
-            case BRAND_PATH:
-                navigate(BRAND_PATH);
-                break;
-            case SUPPLIER_PATH:
-                navigate(SUPPLIER_PATH);
-                break;
-            case COLLECTION_PATH:
-                navigate(COLLECTION_PATH);
-                break;
-        }
+        navigate(e?.key);
     }
 
     // DEFINED MENU
@@ -120,6 +95,57 @@ const MenuFunctions = () => {
                 },
             ],
         },
+        {
+            key: 3,
+            label: t('sell.title'),
+            icon: <MoneyCollectOutlined />,
+            children: [
+                {
+                    key: ORDER_PATH,
+                    label: t('sell.features.order'),
+                    icon: <GoDot />,
+                    children: [],
+                },
+                {
+                    key: CUSTOMER_PATH,
+                    label: t('sell.features.customer'),
+                    icon: <GoDot />,
+                    children: [],
+                },
+            ]
+        },
+        {
+            key: 4,
+            label: t('system.title'),
+            icon: <SettingOutlined />,
+            children: [
+                {
+                    key: STAFF_PATH,
+                    label: t('system.features.staff'),
+                    icon: <GoDot />,
+                    children: [],
+                }
+            ]
+        },
+        {
+            key: 5,
+            label: t('media.title'),
+            icon: <ProductOutlined />,
+            children: [
+                {
+                    key: SLIDE_PATH,
+                    label: t('media.features.slide'),
+                    icon: <GoDot />,
+                    children: [],
+                },
+                {
+                    key: LOOKBOOK_PATH,
+                    label: t('media.features.lookbook'),
+                    icon: <GoDot />,
+                    children: [],
+                }
+            ]
+        }
     ];
 
     const onOpenChange: MenuProps['onOpenChange'] = (openKeys) => {

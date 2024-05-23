@@ -8,6 +8,7 @@ import { useDisclosure } from '@/utils/modal';
 import {
     Button,
     Col,
+    Divider,
     Flex,
     Form,
     Input,
@@ -121,6 +122,7 @@ const CollectionGallery = ({ id }: Props) => {
                 });
 
                 form.resetFields();
+                setIdImage("");
             },
             onError: (error: any) => {
                 notification.error({
@@ -141,6 +143,7 @@ const CollectionGallery = ({ id }: Props) => {
                 });
 
                 form.resetFields();
+                setIdImage("");
             },
             onError: (error: any) => {
                 notification.error({
@@ -208,16 +211,28 @@ const CollectionGallery = ({ id }: Props) => {
     const handleChangeRatio = (e: RadioChangeEvent) => {
         setIsUpload(e.target.value);
 
-        setFileList([
-            {
-                uid: DEFAULT_UID_FILE_LIST,
-                name: DEFAULT_NAME_FILE_LIST,
-                status: DEFAULT_STATUS_FILE_LIST,
-                url: noImage,
-            },
-        ]);
-
-        form.resetFields();
+        if(!idImage) {
+            setFileList([
+                {
+                    uid: DEFAULT_UID_FILE_LIST,
+                    name: DEFAULT_NAME_FILE_LIST,
+                    status: DEFAULT_STATUS_FILE_LIST,
+                    url: noImage,
+                },
+            ]);
+    
+            form.resetFields();
+        } else {
+            setFileList([
+                {
+                    uid: DEFAULT_UID_FILE_LIST,
+                    name: DEFAULT_NAME_FILE_LIST,
+                    status: DEFAULT_STATUS_FILE_LIST,
+                    url: currentCollectionImage?.data?.picture || noImage,
+                },
+            ]);
+            form.setFieldValue('picture', currentCollectionImage?.data?.picture);
+        }
     };
 
     const handleOpen = () => {
@@ -285,8 +300,7 @@ const CollectionGallery = ({ id }: Props) => {
                     });
                 }
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(() => {
                 notification.warning({
                     message: t('collection.validate_form'),
                 });
@@ -364,7 +378,7 @@ const CollectionGallery = ({ id }: Props) => {
                                     <Space>
                                         <Tooltip
                                             title={
-                                                currentCollectionImage?.data
+                                                !currentCollectionImage?.data
                                                     ?._id
                                                     ? t(
                                                           'collection.create_image',
@@ -391,6 +405,9 @@ const CollectionGallery = ({ id }: Props) => {
                                                     )
                                                 }
                                                 onClick={handleSave}
+                                                disabled={
+                                                    (fileList?.[0]?.uid == DEFAULT_UID_FILE_LIST 
+                                                    || fileList?.length == 0) && !form.getFieldValue("picture")}
                                             />
                                         </Tooltip>
                                         <Tooltip
@@ -415,6 +432,7 @@ const CollectionGallery = ({ id }: Props) => {
                                         </Radio>
                                     </Radio.Group>
                                 </Flex>
+                                <Divider />
                                 {!isUpload && (
                                     <Form.Item
                                         name={'picture'}
@@ -431,7 +449,7 @@ const CollectionGallery = ({ id }: Props) => {
                                                             return Promise.reject(
                                                                 new Error(
                                                                     t(
-                                                                        'brand.image_url_invalid',
+                                                                        'collection.image_url_invalid',
                                                                     ),
                                                                 ),
                                                             );

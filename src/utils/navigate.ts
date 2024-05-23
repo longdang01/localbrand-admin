@@ -6,4 +6,3 @@ export const getUrl = (
 
     return url.replace(key, path + '');
 };
-

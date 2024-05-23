@@ -1,3 +1,5 @@
+import { ProductColorsProps } from "./product-color";
+
 export type ProductProps = {
     _id: string;
     subCategory: string;
@@ -11,7 +13,7 @@ export type ProductProps = {
     style: string;
     sizeGuide: string;
     description: string;
-    colors: string[];
+    colors: ProductColorsProps[];
     active: number;
     createdAt: string;
     updatedAt: string;

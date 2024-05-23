@@ -2,14 +2,30 @@
 const HOME_PATH = '/';
 
 const DASHBOARD_PATH = '/dashboard';
+
+// FOR IMPORT
 const PRODUCT_PATH = '/product';
 const PRODUCT_DETAIL_PATH = '/product/:path';
 const IMPORT_BILL_PATH = "/import-bill";
+const IMPORT_BILL_CREATE_PATH = "/import-bill/create";
+const IMPORT_BILL_EDIT_PATH = '/import-bill/:invoiceCode';
+
 const CATEGORY_BIG_PATH = "/category-big";
 const CATEGORY_SMALL_PATH = "/category-small";
 const BRAND_PATH = "/brand";
 const SUPPLIER_PATH = "/supplier";
 const COLLECTION_PATH = "/collection";
+
+// FOR SELL
+const ORDER_PATH = '/order';
+const CUSTOMER_PATH = '/customer';
+
+// FOR SYSTEM
+const STAFF_PATH = '/staff';
+
+// FOR MEDIA
+const SLIDE_PATH = '/slide';
+const LOOKBOOK_PATH = '/lookbook';
 
 // ERRORS
 const NOT_FOUND_PATH = "/not-found";
@@ -29,11 +45,21 @@ export {
     PRODUCT_DETAIL_PATH,
 
     IMPORT_BILL_PATH,
+    IMPORT_BILL_CREATE_PATH,
+    IMPORT_BILL_EDIT_PATH,
     CATEGORY_BIG_PATH,
     CATEGORY_SMALL_PATH,
     BRAND_PATH,
     SUPPLIER_PATH,
     COLLECTION_PATH,
+
+    ORDER_PATH,
+    CUSTOMER_PATH,
+
+    STAFF_PATH,
+
+    SLIDE_PATH,
+    LOOKBOOK_PATH,
 
     LOGIN_PATH,
     FORGOT_PASSWORD_PATH,

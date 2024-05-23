@@ -1,25 +1,15 @@
+import { UserProps } from "./users";
+
 export type StaffProps = {
     _id: string;
-    username: string;
+    user: string | UserProps;
     staffName: string;
-    role: string;
     picture: string;
     phone: string;
-    password: string;
-    email: string;
     dob: string;
+    address: string;
+
+    active: number;
     createdAt: string;
     updatedAt: string;
-    address: string;
-    active: number;
-    user: {
-        _id: string;
-        username: string;
-        password: string;
-        email: string;
-        role: number;
-        active: number;
-        createdAt: string;
-        updatedAt: string
-    }
 }

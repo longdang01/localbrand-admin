@@ -24,7 +24,6 @@ import { useState } from 'react';
 import { checkImageExists } from '@/utils/image';
 import Upload, { RcFile } from 'antd/es/upload';
 import {
-    CONFIG_SLUGIFY,
     DEFAULT_NAME_FILE_LIST,
     DEFAULT_STATUS_FILE_LIST,
     DEFAULT_UID_FILE_LIST,
@@ -32,7 +31,6 @@ import {
 import noImage from '@/assets/images/default/no-image.png';
 import ReactQuill from 'react-quill';
 import { REACT_QUILL_FORMAT, REACT_QUILL_MODULES } from '@/utils/react-quill';
-import slugify from 'slugify';
 import { uploadFile } from '@/services/upload.service';
 import {
     CACHE_BRAND,
@@ -164,10 +162,6 @@ const EditBrandModal = ({ id }: Props) => {
         form.setFieldValue('picture', currentBrand?.data?.picture);
     };
 
-    const handleAutoFillPath = (e: any) => {
-        form.setFieldValue('path', slugify(e?.target?.value, CONFIG_SLUGIFY));
-    };
-
     const handleSubmit = () => {
         form.validateFields()
             .then(async (values) => {
@@ -249,7 +243,6 @@ const EditBrandModal = ({ id }: Props) => {
                                         placeholder={t(
                                             'brand.fields.brand_name',
                                         )}
-                                        onChange={handleAutoFillPath}
                                     />
                                 </FormItem>
                                 {!isUpload && (

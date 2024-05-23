@@ -9,11 +9,15 @@ export const search = async (request: AxiosRequestConfig['params']) => {
     return response.data;
 };
 
+export const getByPath = async (request: AxiosRequestConfig['params']) => {
+    const response = await apiClient?.post(`${prefix}/get-by-path`, request);
+    return response.data;
+};
+
 export const getById = async (id: string) => {
     const response = await apiClient?.get(`${prefix}/${id}`);
     return response.data;
 };
-
 
 export const create = async (request: ProductProps) => {
     const response = await apiClient?.post(`${prefix}`, request);

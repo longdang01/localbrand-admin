@@ -1,8 +1,13 @@
+import { useGetByPath } from '@/loaders/product.loader';
 import PageHeader from '@/modules/shared/page-header/Pageheader';
+import { getSlugify } from '@/utils/path';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
+import ProductColors from './components/detail/ProductColors';
 
 const ProductDetail = () => {
+    const { pathname } = useLocation();
     const { t } = useTranslation('translation', {
         keyPrefix: 'import',
     });
@@ -12,6 +17,12 @@ const ProductDetail = () => {
             title: <span>{t('title')}</span>,
         },
     ];
+
+    const getByPath = useGetByPath({
+        params: {
+            path: getSlugify(pathname)
+        }
+    })
 
     return (
         <>
@@ -32,9 +43,22 @@ const ProductDetail = () => {
 
             <PageHeader
                 pageBreadcrumbs={PRODUCT_BREADCRUMBS}
-                title={t('product.title')}
+                title={
+                    <>
+                        {getByPath?.isLoading ? (
+                            <div style={{ marginLeft: 20 }}>
+                                <div className="dot-loader-sm"></div>
+                            </div>
+                        ) : (
+                            getByPath?.data?.productName
+                        )}
+                    </>
+                }
                 isContainTitle={true}
             />
+
+            <ProductColors product={getByPath?.data}/>
+
 
         </>
     );
