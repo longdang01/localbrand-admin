@@ -11,3 +11,6 @@ export const filterEmptyString = (params: Record<string, any>) => {
     return result;
 };
 
+export const removeNumbersFromString = (str: string) => {
+    return str.replace(/[0-9]/g, '');
+};

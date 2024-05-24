@@ -112,6 +112,7 @@ const ImportBillEditInfo = () => {
                     invoiceDetails: getByCode?.data?.invoiceDetails,
                     note: textContent,
                     staff: getByCode?.data?.staff?._id,
+                    total: parseFloat(values?.total?.replace(/[^0-9.-]+/g, '')),
                 });
             })
             .catch(() => {
@@ -147,7 +148,7 @@ const ImportBillEditInfo = () => {
             />
             <div className="layout">
                 <Card
-                    style={{ minHeight: 900 }}
+                    style={{ minHeight: 1024 }}
                     title={t('invoice.import_bill_info')}
                     extra={
                         <Button

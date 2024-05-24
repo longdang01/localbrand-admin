@@ -1,13 +1,14 @@
+import PageHeader from '@/modules/shared/page-header/Pageheader';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import PageHeader from '../shared/page-header/Pageheader';
+import OrderEditForm from './components/edit/OrderEditForm';
 
-const Dashboard = () => {
+const OrderEdit = () => {
     const { t } = useTranslation('translation', {
-        keyPrefix: 'dashboard',
+        keyPrefix: 'sell',
     });
 
-    const DASHBOARD_BREADCRUMBS = [
+    const ORDER_EDIT_BREADCRUMBS = [
         {
             title: <span>{t('title')}</span>,
         },
@@ -25,18 +26,21 @@ const Dashboard = () => {
                     />
                     <meta name="theme-color" content="#000000" />
                     <title>
-                        {t('meta_title') + ' / FRAGILE Việt Nam'}
+                        {t('order.meta_title') + ' / FRAGILE Việt Nam'}
                     </title>
                 </Helmet>
             </HelmetProvider>
 
             <PageHeader
-                pageBreadcrumbs={DASHBOARD_BREADCRUMBS}
-                title={t('title')}
+                pageBreadcrumbs={ORDER_EDIT_BREADCRUMBS}
+                title={t('order.title_edit')}
                 isContainTitle={true}
             />
+
+            <OrderEditForm />
+
         </>
     );
 };
 
-export default Dashboard;
+export default OrderEdit;

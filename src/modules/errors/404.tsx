@@ -1,4 +1,4 @@
-import { HOME_PATH } from '@/paths';
+import { DASHBOARD_PATH } from '@/paths';
 import { Button, Result } from 'antd';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,11 +10,11 @@ export const NotFoundPage: React.FC = () => {
     const { t } = useTranslation('translation');
 
     const backHome = () => {
-        navigate(HOME_PATH);
+        navigate(DASHBOARD_PATH);
     };
 
     useEffect(() => {
-        document.title = 'Không tìm thấy trang | V-OSINT3-Plus';
+        document.title = 'Không tìm thấy trang | FRAGILE CLUB';
     }, []);
 
     return (

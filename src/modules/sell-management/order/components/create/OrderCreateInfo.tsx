@@ -18,54 +18,51 @@ import { DeleteOutlined, SaveOutlined } from '@ant-design/icons';
 import { useForm } from 'antd/es/form/Form';
 import FormItem from 'antd/es/form/FormItem';
 import { RULES_FORM } from '@/utils/validator';
-import { INVOICE_PAIDS } from '@/constants/config';
-import { useInvoiceDetailState } from '@/stores/invoice-detail.store';
+import {
+    ORDERS_PAIDS,
+    ORDERS_PAYMENTS,
+    ORDERS_STATUSES,
+} from '@/constants/config';
 import { ProductProps } from '@/models/product';
 import { ProductColorsProps } from '@/models/product-color';
 import { ProductSizeProps } from '@/models/product-size';
 import EditProductModal from './EditProductModal';
 import Slash from '@/modules/shared/divider/slash/Slash';
 import ConfirmRender from '@/modules/shared/modal/confirm/ConfirmRender';
-import { InvoiceDetailProps } from '@/models/invoice-detail';
-import { useGetMe } from '@/loaders/auth.loader';
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import { REACT_QUILL_FORMAT, REACT_QUILL_MODULES } from '@/utils/react-quill';
-import { CACHE_INVOICE, useCreateInvoice } from '@/loaders/invoice.loader';
+import { CACHE_ORDER, useCreateOrder } from '@/loaders/order.loader';
 import { queryClient } from '@/lib/react-query';
+import { useOrderDetailState } from '@/stores/order-detail.store';
+import { OrderDetailProps } from '@/models/order-detail';
 
-const ImportBillCreateInfo = () => {
-    const { t } = useTranslation('translation', { keyPrefix: 'import' });
+const OrderCreateInfo = () => {
+    const { t } = useTranslation('translation', { keyPrefix: 'sell' });
     const [form] = useForm();
-
-    const currentUsers = useGetMe({
-        config: {
-            onSuccess: (response) => {
-                form.setFieldValue('staff', response?.staff?.staffName);
-            },
-        },
-    });
+    
     const [transportFee, setTransportFee] = useState<number>(0);
     const [textContent, setTextContent] = useState<string>('');
 
-    const [invoiceDetails, setInvoiceDetails] = useInvoiceDetailState(
-        (state) => [state.invoiceDetails, state.setInvoiceDetails],
-    );
+    const [orderDetails, setOrderDetails] = useOrderDetailState((state) => [
+        state.orderDetails,
+        state.setOrderDetails,
+    ]);
 
-    const createInvoice = useCreateInvoice({
+    const createOrder = useCreateOrder({
         config: {
             onSuccess: (_) => {
-                queryClient.invalidateQueries([CACHE_INVOICE.SEARCH]);
+                queryClient.invalidateQueries([CACHE_ORDER.SEARCH]);
 
                 notification.success({
-                    message: t('invoice.create_success'),
+                    message: t('order.create_success'),
                 });
 
-                setInvoiceDetails([])
-                setTextContent("")
+                setOrderDetails([]);
+                setTextContent('');
                 setTransportFee(0);
                 form.resetFields();
-                form.setFieldValue('staff', currentUsers?.data?.staff?.staffName);
+                form.setFieldValue("customer", t("order.customer_direct"))
             },
             onError: (error: any) => {
                 notification.error({
@@ -75,50 +72,57 @@ const ImportBillCreateInfo = () => {
         },
     });
 
-    const handleDelete = (invoiceDetail: InvoiceDetailProps) => {
-        setInvoiceDetails(
-            invoiceDetails?.filter(
-                (d: InvoiceDetailProps) =>
+    const handleDelete = (orderDetail: OrderDetailProps) => {
+        setOrderDetails(
+            orderDetails?.filter(
+                (d: OrderDetailProps) =>
                     (d?.product as ProductProps)?._id !=
-                        (invoiceDetail?.product as ProductProps)?._id &&
+                        (orderDetail?.product as ProductProps)?._id &&
                     (d?.color as ProductColorsProps)?._id !=
-                        (invoiceDetail?.color as ProductColorsProps)?._id &&
+                        (orderDetail?.color as ProductColorsProps)?._id &&
                     (d?.size as ProductSizeProps)?._id !=
-                        (invoiceDetail?.size as ProductSizeProps)?._id,
+                        (orderDetail?.size as ProductSizeProps)?._id,
             ),
         );
     };
 
     useEffect(() => {
+        form.setFieldValue("customer", t("order.customer_direct"))
+    }, [])
+
+    useEffect(() => {
         form.setFieldValue(
             'total_calculate',
-            Number(invoiceDetails?.reduce(
-                (acc, item) =>
-                    acc + Number(item?.quantity) * Number(item?.priceImport),
-                0,
-            ))?.toLocaleString(),
+            Number(
+                orderDetails?.reduce(
+                    (acc, item) =>
+                        acc + Number(item?.quantity) * Number(item?.price),
+                    0,
+                ),
+            )?.toLocaleString(),
         );
         form.setFieldValue(
             'total',
-            Number(invoiceDetails?.reduce(
-                (acc, item) =>
-                    acc + Number(item?.quantity) * Number(item?.priceImport),
-                0,
-            ) + Number(transportFee))?.toLocaleString(),
+            Number(
+                orderDetails?.reduce(
+                    (acc, item) =>
+                        acc + Number(item?.quantity) * Number(item?.price),
+                    0,
+                ) + Number(transportFee),
+            )?.toLocaleString(),
         );
-    }, [invoiceDetails, transportFee]);
+    }, [orderDetails, transportFee]);
 
     const handleSubmit = () => {
-
         form.validateFields()
             .then(async (values) => {
-                createInvoice.mutate({
+                createOrder.mutate({
                     ...values,
-                    details: invoiceDetails,
-                    staff: currentUsers?.data?.staff?._id,
+                    customer: "",
+                    details: orderDetails,
                     note: textContent,
-                    total: parseFloat(values?.total?.replace(/[^0-9.-]+/g, ''))
-                })
+                    total: parseFloat(values?.total?.replace(/[^0-9.-]+/g, '')),
+                });
             })
             .catch(() => {
                 notification.warning({
@@ -131,16 +135,16 @@ const ImportBillCreateInfo = () => {
         <>
             <div className="layout">
                 <Card
-                    style={{ minHeight: 1024}}
-                    title={t('invoice.import_bill_info')}
+                    style={{ minHeight: 1024 }}
+                    title={t('order.order_bill_info')}
                     extra={
                         <Button
-                            loading={createInvoice?.isLoading}
+                            loading={createOrder?.isLoading}
                             type="primary"
                             icon={<SaveOutlined />}
                             onClick={handleSubmit}
                         >
-                            {t('invoice.save')}
+                            {t('order.save')}
                         </Button>
                     }
                 >
@@ -149,35 +153,35 @@ const ImportBillCreateInfo = () => {
                             <Form form={form} layout="vertical">
                                 <FormItem
                                     labelCol={{ span: 10 }}
-                                    name={'staff'}
-                                    label={t('invoice.fields.staff')}
+                                    name={'customer'}
+                                    label={t('order.fields.customer')}
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Input
-                                        placeholder={t('invoice.fields.staff')}
+                                        placeholder={t('order.fields.customer')}
                                         readOnly
                                     />
                                 </FormItem>
                                 <FormItem
                                     labelCol={{ span: 10 }}
                                     name={'total_calculate'}
-                                    label={t('invoice.fields.total')}
+                                    label={t('order.fields.total')}
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Input
-                                        placeholder={t('invoice.fields.total')}
+                                        placeholder={t('order.fields.total')}
                                         readOnly
                                     />
                                 </FormItem>
                                 <FormItem
                                     labelCol={{ span: 10 }}
                                     name={'transportFee'}
-                                    label={t('invoice.fields.transport_fee')}
+                                    label={t('order.fields.transport_fee')}
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Input
                                         placeholder={t(
-                                            'invoice.fields.transport_fee',
+                                            'order.fields.transport_fee',
                                         )}
                                         onChange={(e) =>
                                             setTransportFee(
@@ -189,26 +193,49 @@ const ImportBillCreateInfo = () => {
                                 <FormItem
                                     labelCol={{ span: 10 }}
                                     name={'total'}
-                                    label={t('invoice.fields.total_calculate')}
+                                    label={t('order.fields.total_calculate')}
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Input
                                         placeholder={t(
-                                            'invoice.fields.total_calculate',
+                                            'order.fields.total_calculate',
                                         )}
                                         readOnly
                                     />
                                 </FormItem>
                                 <FormItem
                                     labelCol={{ span: 10 }}
-                                    name={'paid'}
-                                    label={t('invoice.fields.paid_status')}
+                                    name={'status'}
+                                    label={t('order.fields.status')}
                                     rules={[...RULES_FORM.required]}
                                 >
                                     <Select
-                                        options={INVOICE_PAIDS}
+                                        options={ORDERS_STATUSES}
+                                        placeholder={t('order.fields.status')}
+                                    />
+                                </FormItem>
+                                <FormItem
+                                    labelCol={{ span: 10 }}
+                                    name={'payment'}
+                                    label={t('order.fields.payment')}
+                                    rules={[...RULES_FORM.required]}
+                                >
+                                    <Select
+                                        options={ORDERS_PAYMENTS}
+                                        placeholder={t('order.fields.payment')}
+                                    />
+                                </FormItem>
+
+                                <FormItem
+                                    labelCol={{ span: 10 }}
+                                    name={'paid'}
+                                    label={t('order.fields.paid_status')}
+                                    rules={[...RULES_FORM.required]}
+                                >
+                                    <Select
+                                        options={ORDERS_PAIDS}
                                         placeholder={t(
-                                            'invoice.fields.paid_status',
+                                            'order.fields.paid_status',
                                         )}
                                     />
                                 </FormItem>
@@ -227,24 +254,24 @@ const ImportBillCreateInfo = () => {
                         <Col span={24} md={12} lg={12}>
                             <Row>
                                 <Typography.Text>
-                                    {t('invoice.product_list')}
+                                    {t('order.product_list')}
                                 </Typography.Text>
                             </Row>
 
                             <List
                                 itemLayout="horizontal"
-                                dataSource={invoiceDetails}
-                                renderItem={(invoiceDetail) => (
+                                dataSource={orderDetails}
+                                renderItem={(orderDetail) => (
                                     <List.Item
-                                        key={invoiceDetail?._id}
+                                        key={orderDetail?._id}
                                         actions={[
                                             <EditProductModal
                                                 id={
                                                     (
-                                                        invoiceDetail?.product as ProductProps
+                                                        orderDetail?.product as ProductProps
                                                     )?._id
                                                 }
-                                                invoiceDetail={invoiceDetail}
+                                                orderDetail={orderDetail}
                                             />,
                                             <ConfirmRender
                                                 buttonRender={
@@ -263,7 +290,7 @@ const ImportBillCreateInfo = () => {
                                                     </Tooltip>
                                                 }
                                                 handleConfirm={() =>
-                                                    handleDelete(invoiceDetail)
+                                                    handleDelete(orderDetail)
                                                 }
                                                 content={t(
                                                     'product.confirm_delete',
@@ -279,7 +306,7 @@ const ImportBillCreateInfo = () => {
                                                 <Typography.Text>
                                                     {
                                                         (
-                                                            invoiceDetail?.product as ProductProps
+                                                            orderDetail?.product as ProductProps
                                                         )?.productName
                                                     }
                                                 </Typography.Text>
@@ -291,7 +318,7 @@ const ImportBillCreateInfo = () => {
                                                         size={'small'}
                                                         style={{
                                                             background: (
-                                                                invoiceDetail?.color as ProductColorsProps
+                                                                orderDetail?.color as ProductColorsProps
                                                             )?.hex,
                                                             width: 12,
                                                             height: 12,
@@ -300,20 +327,20 @@ const ImportBillCreateInfo = () => {
                                                     />
                                                     {
                                                         (
-                                                            invoiceDetail?.color as ProductColorsProps
+                                                            orderDetail?.color as ProductColorsProps
                                                         )?.colorName
                                                     }
                                                     <Slash />
                                                     {
                                                         (
-                                                            invoiceDetail?.size as ProductSizeProps
+                                                            orderDetail?.size as ProductSizeProps
                                                         )?.sizeName
                                                     }
                                                     <Slash />
-                                                    {`x${invoiceDetail?.quantity}`}
+                                                    {`x${orderDetail?.quantity}`}
                                                     <Slash />
                                                     {Number(
-                                                        invoiceDetail?.priceImport,
+                                                        orderDetail?.price,
                                                     )?.toLocaleString()}
                                                 </Flex>
                                             }
@@ -329,4 +356,4 @@ const ImportBillCreateInfo = () => {
     );
 };
 
-export default ImportBillCreateInfo;
+export default OrderCreateInfo;

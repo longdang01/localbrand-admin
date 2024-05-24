@@ -3,6 +3,7 @@ export type ProductSizeProps = {
     color: string;
     sizeName: string;
     quantity: number;
+    price: number;
     active: number;
     createdAt: string;
     updatedAt: string;

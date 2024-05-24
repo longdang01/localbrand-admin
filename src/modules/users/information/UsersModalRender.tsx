@@ -8,6 +8,7 @@ import {
     Radio,
     RadioChangeEvent,
     Row,
+    Select,
     Typography,
     Upload,
     UploadFile,
@@ -26,6 +27,7 @@ import {
     DEFAULT_STATUS_FILE_LIST,
     DEFAULT_UID_FILE_LIST,
     FORMAT_DATE,
+    ROLES,
 } from '@/constants/config';
 import { checkImageExists } from '@/utils/image';
 import { RULES_FORM } from '@/utils/validator';
@@ -59,6 +61,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                     handleBindingData({
                         ...response?.staff,
                         user: response?.user,
+                        role: String(response?.user?.role),
                         username: response?.user?.username,
                         email: response?.user?.email,
                         password: response?.user?.password,
@@ -300,6 +303,17 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                                 </FormItem>
                                 <FormItem
                                     labelCol={{ span: 7 }}
+                                    label={t('staff.fields.role')}
+                                    name="role"
+                                    rules={[...RULES_FORM.required]}
+                                >
+                                    <Select
+                                        options={ROLES}
+                                        placeholder={t('staff.fields.role')}
+                                    />
+                                </FormItem>
+                                <FormItem
+                                    labelCol={{ span: 7 }}
                                     label={t('staff.fields.dob')}
                                     name="dob"
                                     rules={[...RULES_FORM.required]}
@@ -341,6 +355,7 @@ const UsersModalRender = ({ open, handleClose }: Props) => {
                                         placeholder={t('staff.fields.address')}
                                     />
                                 </FormItem>
+                                
                                 {!isUpload && (
                                     <Form.Item
                                         labelCol={{ span: 7 }}

@@ -1,11 +1,11 @@
-import ImportBillCreateInfo from './ImportBillEditInfo';
+import ImportBillEditInfo from './ImportBillEditInfo';
 
 interface Props {}
 
 const ImportBillEditForm = ({}: Props) => {
     return (
         <>
-            <ImportBillCreateInfo />
+            <ImportBillEditInfo />
         </>
     );
 };

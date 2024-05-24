@@ -4,6 +4,7 @@ import {
     CATEGORY_BIG_PATH,
     CATEGORY_SMALL_PATH,
     COLLECTION_PATH,
+    CUSTOMER_PATH,
     DASHBOARD_PATH,
     FORGOT_PASSWORD_PATH,
     IMPORT_BILL_CREATE_PATH,
@@ -13,6 +14,9 @@ import {
     LOOKBOOK_PATH,
     NOT_AUTHORIZATION_PATH,
     NOT_FOUND_PATH,
+    ORDER_CREATE_PATH,
+    ORDER_EDIT_PATH,
+    ORDER_PATH,
     PRODUCT_DETAIL_PATH,
     PRODUCT_PATH,
     RESET_PASSWORD_PATH,
@@ -35,12 +39,26 @@ import { CategoryBigPage } from './modules/import-management/category-big';
 import { BrandPage } from './modules/import-management/brand';
 import { CategorySmallPage } from './modules/import-management/category-small';
 import { CollectionPage } from './modules/import-management/collection';
-import { ProductDetailPage, ProductPage } from './modules/import-management/product';
+import {
+    ProductDetailPage,
+    ProductPage,
+} from './modules/import-management/product';
 import { SupplierPage } from './modules/import-management/supplier';
 import { SlidePage } from './modules/media-management/slide';
 import { LookbookPage } from './modules/media-management/lookbook';
 import { StaffPage } from './modules/system-management/staff';
-import { ImportBillCreatePage, ImportBillEditPage, ImportBillPage } from './modules/import-management/import-bill';
+import {
+    ImportBillCreatePage,
+    ImportBillEditPage,
+    ImportBillPage,
+} from './modules/import-management/import-bill';
+import { CustomerPage } from './modules/sell-management/customer';
+import {
+    OrderCreatePage,
+    OrderEditPage,
+    OrderPage,
+} from './modules/sell-management/order';
+import RoleGuard from './guard/RoleGuard';
 
 const routers = createBrowserRouter([
     {
@@ -50,61 +68,114 @@ const routers = createBrowserRouter([
         children: [
             {
                 path: DASHBOARD_PATH,
-                element: <DashboardPage />
+                element: <DashboardPage />,
             },
             {
                 path: BRAND_PATH,
-                element: <BrandPage />,
+                element: <RoleGuard roles={[1, 2]} children={<BrandPage />} />,
             },
             {
                 path: CATEGORY_BIG_PATH,
-                element: <CategoryBigPage />,
+                element: (
+                    <RoleGuard roles={[1, 2]} children={<CategoryBigPage />} />
+                ),
             },
             {
                 path: CATEGORY_SMALL_PATH,
-                element: <CategorySmallPage />,
+                element: (
+                    <RoleGuard
+                        roles={[1, 2]}
+                        children={<CategorySmallPage />}
+                    />
+                ),
             },
             {
                 path: COLLECTION_PATH,
-                element: <CollectionPage />,
+                element: (
+                    <RoleGuard children={<CollectionPage />} roles={[1, 2]} />
+                ),
             },
             {
                 path: IMPORT_BILL_PATH,
-                element: <ImportBillPage />,
+                element: (
+                    <RoleGuard children={<ImportBillPage />} roles={[1, 2]} />
+                ),
             },
             {
                 path: IMPORT_BILL_CREATE_PATH,
-                element: <ImportBillCreatePage />,
+                element: (
+                    <RoleGuard
+                        children={<ImportBillCreatePage />}
+                        roles={[1, 2]}
+                    />
+                ),
             },
             {
                 path: IMPORT_BILL_EDIT_PATH,
-                element: <ImportBillEditPage />,
+                element: (
+                    <RoleGuard
+                        children={<ImportBillEditPage />}
+                        roles={[1, 2]}
+                    />
+                ),
             },
             {
                 path: PRODUCT_PATH,
-                element: <ProductPage />,
+                element: (
+                    <RoleGuard children={<ProductPage />} roles={[1, 2]} />
+                ),
             },
             {
                 path: PRODUCT_DETAIL_PATH,
-                element: <ProductDetailPage />,
+                element: (
+                    <RoleGuard
+                        children={<ProductDetailPage />}
+                        roles={[1, 2]}
+                    />
+                ),
             },
             {
                 path: SUPPLIER_PATH,
-                element: <SupplierPage />,
+                element: (
+                    <RoleGuard children={<SupplierPage />} roles={[1, 2]} />
+                ),
             },
-
+            {
+                path: ORDER_PATH,
+                element: <RoleGuard children={<OrderPage />} roles={[1, 3]} />,
+            },
+            {
+                path: ORDER_CREATE_PATH,
+                element: (
+                    <RoleGuard children={<OrderCreatePage />} roles={[1, 3]} />
+                ),
+            },
+            {
+                path: ORDER_EDIT_PATH,
+                element: (
+                    <RoleGuard children={<OrderEditPage />} roles={[1, 3]} />
+                ),
+            },
+            {
+                path: CUSTOMER_PATH,
+                element: (
+                    <RoleGuard children={<CustomerPage />} roles={[1, 3]} />
+                ),
+            },
             {
                 path: STAFF_PATH,
-                element: <StaffPage />,
+                element: <RoleGuard children={<StaffPage />} roles={[1]} />,
             },
 
             {
                 path: SLIDE_PATH,
-                element: <SlidePage />,
+                element: <RoleGuard children={<SlidePage />} roles={[1, 4]} />,
             },
             {
                 path: LOOKBOOK_PATH,
-                element: <LookbookPage />,
+                element: (
+                    <RoleGuard children={<LookbookPage />} roles={[1, 4]} />
+                ),
             },
 
             {

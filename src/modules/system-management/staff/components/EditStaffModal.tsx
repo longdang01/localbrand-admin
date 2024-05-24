@@ -11,6 +11,7 @@ import {
     Radio,
     RadioChangeEvent,
     Row,
+    Select,
     Tooltip,
     Typography,
     UploadFile,
@@ -30,6 +31,7 @@ import {
     DEFAULT_STATUS_FILE_LIST,
     DEFAULT_UID_FILE_LIST,
     FORMAT_DATE,
+    ROLES,
 } from '@/constants/config';
 import noImage from '@/assets/images/default/no-image.png';
 import { uploadFile } from '@/services/upload.service';
@@ -61,11 +63,13 @@ const EditStaffModal = ({ id }: Props) => {
         id,
         config: {
             onSuccess: (response) => {
+                console.log(response);
                 form.setFieldsValue({
                     ...response,
                     email: response?.user?.email,
                     username: response?.user?.username,
-                    password: response?.user?.password
+                    password: response?.user?.password,
+                    role: String(response?.user?.role)
                 });
                 form.setFieldValue('upload', '');
                 form.setFieldValue(
@@ -218,8 +222,8 @@ const EditStaffModal = ({ id }: Props) => {
                     _id: currentStaff?.data?._id,
                     user: {
                         ...currentStaff?.data?.user,
-                        email: values?.email
-                    }
+                        email: values?.email,
+                    },
                 });
             })
             .catch(() => {
@@ -268,7 +272,7 @@ const EditStaffModal = ({ id }: Props) => {
                                 <FormItem
                                     labelCol={{ span: 7 }}
                                     label={t('staff.fields.username')}
-                                    name={"username"}
+                                    name={'username'}
                                     rules={[
                                         ...RULES_FORM.required,
                                         ...RULES_FORM.username,
@@ -286,9 +290,7 @@ const EditStaffModal = ({ id }: Props) => {
                                     hidden
                                 >
                                     <Input
-                                        placeholder={t(
-                                            'staff.fields.password',
-                                        )}
+                                        placeholder={t('staff.fields.password')}
                                     />
                                 </FormItem>
                                 <FormItem
@@ -301,6 +303,17 @@ const EditStaffModal = ({ id }: Props) => {
                                         placeholder={t(
                                             'staff.fields.staff_name',
                                         )}
+                                    />
+                                </FormItem>
+                                <FormItem
+                                    labelCol={{ span: 7 }}
+                                    label={t('staff.fields.role')}
+                                    name="role"
+                                    rules={[...RULES_FORM.required]}
+                                >
+                                    <Select
+                                        options={ROLES}
+                                        placeholder={t('staff.fields.role')}
                                     />
                                 </FormItem>
                                 <FormItem
@@ -346,6 +359,7 @@ const EditStaffModal = ({ id }: Props) => {
                                         placeholder={t('staff.fields.address')}
                                     />
                                 </FormItem>
+
                                 {!isUpload && (
                                     <Form.Item
                                         labelCol={{ span: 7 }}

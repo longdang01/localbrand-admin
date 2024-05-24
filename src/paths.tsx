@@ -18,6 +18,9 @@ const COLLECTION_PATH = "/collection";
 
 // FOR SELL
 const ORDER_PATH = '/order';
+const ORDER_CREATE_PATH = "/order/create";
+const ORDER_EDIT_PATH = '/order/:ordersCode';
+
 const CUSTOMER_PATH = '/customer';
 
 // FOR SYSTEM
@@ -54,6 +57,8 @@ export {
     COLLECTION_PATH,
 
     ORDER_PATH,
+    ORDER_CREATE_PATH,
+    ORDER_EDIT_PATH,
     CUSTOMER_PATH,
 
     STAFF_PATH,

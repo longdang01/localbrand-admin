@@ -1,13 +1,13 @@
 import { useGetByIdProduct } from '@/loaders/product.loader';
-import { InvoiceDetailProps } from '@/models/invoice-detail';
+import { OrderDetailProps } from '@/models/order-detail';
 import { ProductProps } from '@/models/product';
 import { ProductColorsProps } from '@/models/product-color';
 import { ProductSizeProps } from '@/models/product-size';
 import ModalRender from '@/modules/shared/modal/ModalRender';
-import { useInvoiceDetailState } from '@/stores/invoice-detail.store';
+import { useOrderDetailState } from '@/stores/order-detail.store';
 import { useDisclosure } from '@/utils/modal';
 import { RULES_FORM } from '@/utils/validator';
-import { EditOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import {
     Button,
     Col,
@@ -30,18 +30,15 @@ const { useToken } = theme;
 
 interface Props {
     id?: string;
-    invoiceDetail?: InvoiceDetailProps;
 }
 
-const EditProductModal = ({ id, invoiceDetail }: Props) => {
-    const { t } = useTranslation('translation', { keyPrefix: 'import' });
+const CreateProductModal = ({ id }: Props) => {
+    const { t } = useTranslation('translation', { keyPrefix: 'sell' });
     const { isOpen, open, close } = useDisclosure();
     const { token } = useToken();
 
     const [form] = useForm();
-    const [invoiceDetails, setInvoiceDetails] = useInvoiceDetailState(
-        (state) => [state.invoiceDetails, state.setInvoiceDetails],
-    );
+    const [orderDetails, setOrderDetails] = useOrderDetailState((state) => [state.orderDetails, state.setOrderDetails]);
     const [choosedColor, setChoosedColor] = useState<ProductColorsProps>();
     const [choosedSize, setChoosedSize] = useState<ProductSizeProps>();
 
@@ -51,11 +48,7 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
             onSuccess: (response) => {
                 form.setFieldsValue({
                     ...response,
-                    ...invoiceDetail,
                 });
-                setChoosedColor(invoiceDetail?.color as ProductColorsProps);
-                setChoosedSize(invoiceDetail?.size as ProductSizeProps);
-               
             },
             onError: (error: any) => {
                 notification.error({
@@ -79,14 +72,15 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
             (color: ProductColorsProps) => color?._id == e,
         );
 
-        form.setFieldValue('color_id', e);
         setChoosedColor(color);
         setChoosedSize(undefined);
-        form.setFieldValue('size_id', null);
+        form.setFieldValue("color_id", e);
+        form.setFieldValue("size_id", null);
+        form.setFieldValue('price', color?.price);
     };
 
     const handleChoosedSize = (e: any) => {
-        form.setFieldValue('size_id', e);
+        form.setFieldValue("size_id", e);
         setChoosedSize(
             choosedColor?.sizes?.find(
                 (size: ProductSizeProps) => size?._id == e,
@@ -97,41 +91,38 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
     const handleSubmit = () => {
         form.validateFields()
             .then(async (values) => {
-                const checkExisted = invoiceDetails?.filter((d:InvoiceDetailProps) => 
-                    ((d?.product as ProductProps)?._id != (invoiceDetail?.product as ProductProps)?._id || 
-                    (d?.color as ProductColorsProps)?._id != (invoiceDetail?.color as ProductColorsProps)?._id || 
-                    (d?.size as ProductSizeProps)?._id != (invoiceDetail?.size as ProductSizeProps)?._id )
-                )?.find((invoiceDetail:InvoiceDetailProps) => 
-                    (invoiceDetail?.product as ProductProps)?._id == currentProduct?.data?._id && 
-                    (invoiceDetail?.color as ProductColorsProps)?._id == choosedColor?._id && 
-                    (invoiceDetail?.size as ProductSizeProps)?._id == choosedSize?._id
+                                
+                const checkExisted = orderDetails?.find((orderDetail:OrderDetailProps) => 
+                    (orderDetail?.product as ProductProps)?._id == currentProduct?.data?._id && 
+                    (orderDetail?.color as ProductColorsProps)?._id == choosedColor?._id && 
+                    (orderDetail?.size as ProductSizeProps)?._id == choosedSize?._id
                 ) 
 
-                if(
-                    checkExisted 
-                ) {
+                if(checkExisted) {
                     notification.warning({
-                        message: t('invoice.create_product_warning'),
+                        message: t('order.create_product_warning'),
                     });
                     return;
                 }
 
-                const details = invoiceDetails?.map(
-                    (d: InvoiceDetailProps) =>
-                        ((d?.product as ProductProps)?._id ==
-                            (invoiceDetail?.product as ProductProps)?._id &&
-                        (d?.color as ProductColorsProps)?._id ==
-                            (invoiceDetail?.color as ProductColorsProps)?._id &&
-                        (d?.size as ProductSizeProps)?._id ==
-                            (invoiceDetail?.size as ProductSizeProps)?._id) ? {
-                            ...d,
-                            ...values,
-                            color: choosedColor,
-                            size: choosedSize
-                        } : {...d},
-                );
+                if(choosedSize && (values?.quantity > choosedSize?.quantity)) {
+                    notification.warning({
+                        message: t('order.quantity_product_warning'),
+                    });
+                    return;
+                }
 
-                setInvoiceDetails(details);
+                setOrderDetails([
+                    {
+                        ...values,
+                        product: currentProduct?.data,
+                        color: choosedColor,
+                        size: choosedSize
+
+                    },
+                    ...orderDetails,
+                ])
+
                 handleClose?.();
             })
             .catch(() => {
@@ -141,20 +132,22 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
             });
     };
 
+
     return (
         <>
             <ModalRender
                 customHeader={true}
                 title={
                     <Typography.Text>
-                        {t('invoice.product_info')}
+                        {t('order.product_info')}
                     </Typography.Text>
                 }
                 buttonRender={
-                    <Tooltip title={t('product.update')}>
+                    <Tooltip title={t('order.order')}>
                         <Button
                             type="primary"
-                            icon={<EditOutlined />}
+                            shape="circle"
+                            icon={<PlusOutlined />}
                             onClick={handleOpen}
                         />
                     </Tooltip>
@@ -179,24 +172,24 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
                         <FormItem
                             labelCol={{ span: 7 }}
                             name="productName"
-                            label={t('invoice.fields.product')}
+                            label={t('order.fields.product')}
                             rules={[...RULES_FORM.required]}
                         >
                             <Input
-                                placeholder={t('invoice.fields.product')}
+                                placeholder={t('order.fields.product')}
                                 readOnly
                             />
                         </FormItem>
                         <Row gutter={24}>
                             <Col span={24} md={12} lg={12}>
-                                <Row>
-                                    <Col span={22} md={22} lg={22}>
-                                        <FormItem
-                                            labelCol={{ span: 7 }}
-                                            label={t('invoice.fields.color')}
-                                            name="color_id"
-                                            rules={[...RULES_FORM.required]}
-                                        >
+                                <FormItem
+                                    labelCol={{ span: 7 }}
+                                    label={t('order.fields.color')}
+                                    name="color_id"
+                                    rules={[...RULES_FORM.required]}
+                                >
+                                    <Row gutter={0}>
+                                        <Col span={22} md={22} lg={22}>
                                             <Select
                                                 onSelect={handleChoosedColor}
                                                 options={currentProduct?.data?.colors?.map(
@@ -208,31 +201,29 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
                                                     }),
                                                 )}
                                                 placeholder={t(
-                                                    'invoice.fields.color',
+                                                    'order.fields.color',
                                                 )}
                                             />
-                                        </FormItem>
-                                    </Col>
-                                    <Col span={2} md={2} lg={2}>
-                                        <Flex style={{ height: "100%"}} align='end' justify="end">
-                                            <Button
-                                                type="text"
-                                                style={{
-                                                    backgroundColor:
-                                                        choosedColor?.hex,
-                                                    border: '1px solid #d6d6d6',
-                                                    marginBottom: 24
-                                                }}
-                                            />
-                                        </Flex>
-                                    </Col>
-                                </Row>
+                                        </Col>
+                                        <Col span={2} md={2} lg={2}>
+                                            <Flex justify="end">
+                                                <Button
+                                                    type="text"
+                                                    style={{
+                                                        backgroundColor:
+                                                            choosedColor?.hex,
+                                                        border: "1px solid #d6d6d6"
+                                                    }}
+                                                />
+                                            </Flex>
+                                        </Col>
+                                    </Row>
+                                </FormItem>
                             </Col>
-
                             <Col span={24} md={12} lg={12}>
                                 <FormItem
                                     labelCol={{ span: 7 }}
-                                    label={t('invoice.fields.size')}
+                                    label={t('order.fields.size')}
                                     name="size_id"
                                     rules={[...RULES_FORM.required]}
                                 >
@@ -244,14 +235,14 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
                                                 value: size?._id,
                                             }),
                                         )}
-                                        placeholder={t('invoice.fields.size')}
+                                        placeholder={t('order.fields.size')}
                                     />
                                 </FormItem>
                             </Col>
                             <Col span={24} md={12} lg={12}>
                                 <FormItem
                                     labelCol={{ span: 7 }}
-                                    label={t('invoice.fields.quantity')}
+                                    label={`${t('order.fields.quantity')} (${choosedSize?.quantity || 0})`}
                                     name="quantity"
                                     rules={[
                                         ...RULES_FORM.required,
@@ -260,7 +251,7 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
                                 >
                                     <Input
                                         placeholder={t(
-                                            'invoice.fields.quantity',
+                                            'order.fields.quantity',
                                         )}
                                         style={{ width: '100%' }}
                                     />
@@ -269,8 +260,8 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
                             <Col span={24} md={12} lg={12}>
                                 <FormItem
                                     labelCol={{ span: 7 }}
-                                    label={t('invoice.fields.price_import')}
-                                    name="priceImport"
+                                    label={t('order.fields.price')}
+                                    name="price"
                                     rules={[
                                         ...RULES_FORM.required,
                                         ...RULES_FORM.number,
@@ -278,9 +269,11 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
                                 >
                                     <Input
                                         placeholder={t(
-                                            'invoice.fields.price_import',
+                                            'order.fields.price',
                                         )}
                                         style={{ width: '100%' }}
+                                        readOnly
+
                                     />
                                 </FormItem>
                             </Col>
@@ -292,4 +285,4 @@ const EditProductModal = ({ id, invoiceDetail }: Props) => {
     );
 };
 
-export default EditProductModal;
+export default CreateProductModal;

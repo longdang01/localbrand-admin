@@ -4,7 +4,7 @@ import FormItem from 'antd/es/form/FormItem';
 import { Button, Flex, Input, Typography, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { FORGOT_PASSWORD_PATH, HOME_PATH } from '@/paths';
+import { DASHBOARD_PATH, FORGOT_PASSWORD_PATH } from '@/paths';
 import LayoutForm from '../../layout-form/LayoutForm';
 import { useLogin } from '@/loaders/auth.loader';
 import storage from '@/utils/storage';
@@ -47,7 +47,7 @@ const LoginForm = ({}: Props) => {
 
                 // navigate
                 setTimeout(() => {
-                    navigate(HOME_PATH);
+                    navigate(DASHBOARD_PATH);
                 }, 300)
             },
             onError: (error) => {
