@@ -1,6 +1,7 @@
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import PageHeader from '../shared/page-header/Pageheader';
+import DashboardArea from './components/DashboardArea';
 
 const Dashboard = () => {
     const { t } = useTranslation('translation', {
@@ -35,6 +36,8 @@ const Dashboard = () => {
                 title={t('title')}
                 isContainTitle={true}
             />
+
+            <DashboardArea />
         </>
     );
 };

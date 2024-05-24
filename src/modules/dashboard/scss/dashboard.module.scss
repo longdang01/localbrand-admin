@@ -1,0 +1,31 @@
+@import '@/assets/scss/_variables.scss';
+@import '@/assets/scss/rules.scss';
+
+
+.chart-container {
+    position: relative;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.02);
+    border-radius: 10px;
+    padding: 1.5rem;
+    min-height: 474px;
+
+    .chart-header {
+      @include flex-variant(start, center, row);
+      padding: 5px 5px 5px 0;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: var(--primary-color);
+
+      svg {
+        margin-right: 5px;
+      }
+    }
+
+    .spin-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }

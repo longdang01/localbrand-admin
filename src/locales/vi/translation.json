@@ -10,7 +10,17 @@
     },
     "dashboard": {
         "meta_title": "Bảng điều khiển",
-        "title": "Bảng điều khiển"
+        "title": "Bảng điều khiển",
+        "column_chart": {
+            "spending": "Tổng chi",
+            "revenue": "Tổng doanh thu"
+        },
+        "mini_card": {
+            "sale": "Sản phẩm giảm giá",
+            "product": "Sản phẩm",
+            "customer": "Khách hàng",
+            "order": "Đơn hàng"
+        }
     },
     "import": {
         "title": "Nhập hàng",
