@@ -1,6 +1,5 @@
 import {
     ExtractFnReturnType,
-    MutationConfig,
     QueryConfig,
 } from '@/lib/react-query';
 import {
@@ -11,8 +10,7 @@ import {
     getTotalSpending,
     getRevenue,
 } from '@/services/statistics.service';
-import { AxiosRequestConfig } from 'axios';
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 
 export const CACHE_STATISTICS = {
     TOTAL_SALES: 'TOTAL_SALES',
