@@ -36,12 +36,43 @@ import { OrderDetailProps } from '@/models/order-detail';
 import { queryClient } from '@/lib/react-query';
 import Toolbars from '@/modules/shared/toolbars/Toolbars';
 import { TiArrowBackOutline } from 'react-icons/ti';
-import { ORDERS_PAIDS, ORDERS_PAYMENTS, ORDERS_STATUSES } from '@/constants/config';
+import {
+    ORDERS_PAIDS,
+    ORDERS_PAYMENTS,
+    ORDERS_STATUSES,
+} from '@/constants/config';
+import { REGIONS } from '@/constants/region';
+import {
+    DistrictProps,
+    ProvinceProps,
+    WardProps,
+} from '@/models/delivery-address';
+import TextArea from 'antd/es/input/TextArea';
 
 const OrderEditInfo = () => {
     const { t } = useTranslation('translation', { keyPrefix: 'sell' });
     const { pathname } = useLocation();
     const [form] = useForm();
+
+    const getInfoDeliveryAddress = (id: string, type: number) => {
+        if (type == 1) {
+            const province = REGIONS.find((item) => item.Id == id);
+            return province as ProvinceProps;
+        }
+
+        if (type == 2) {
+            const districts = REGIONS.map((item) => item.Districts).flat(1);
+            const district = districts.find((item) => item.Id == id);
+            return district as DistrictProps;
+        }
+
+        if (type == 3) {
+            const districts = REGIONS.map((item) => item.Districts).flat(1);
+            const wards = districts.map((item) => item.Wards).flat(1);
+            const ward = wards.find((item: any) => item.Id == id);
+            return ward as WardProps;
+        }
+    };
 
     const getByCode = useGetByCodeOrder({
         params: {
@@ -54,18 +85,48 @@ const OrderEditInfo = () => {
                     status: String(response?.status),
                     payment: String(response?.payment),
                     paid: String(response?.paid),
-                    total: Number(response?.total)?.toLocaleString()
+                    total: Number(response?.total)?.toLocaleString(),
                 });
-                form.setFieldValue('customer', response?.customer ? response?.customer?.customerName : t("order.customer_direct"));
+                form.setFieldValue(
+                    'address',
+                    `${response?.deliveryAddress?.consigneeName}, ${response?.deliveryAddress?.consigneePhone}, ${
+                        response?.deliveryAddress.country == 1
+                            ? `${response?.deliveryAddress.deliveryAddressName}, ${
+                                  getInfoDeliveryAddress(
+                                      response?.deliveryAddress.province,
+                                      1,
+                                  )?.Name
+                              }, ${
+                                  getInfoDeliveryAddress(
+                                      response?.deliveryAddress.district,
+                                      2,
+                                  )?.Name
+                              }, ${
+                                  getInfoDeliveryAddress(
+                                      response?.deliveryAddress.ward,
+                                      3,
+                                  )?.Name
+                              }`
+                            : response?.deliveryAddress.deliveryAddressName
+                    }
+                    `,
+                );
+                form.setFieldValue(
+                    'customer',
+                    response?.customer
+                        ? response?.customer?.customerName
+                        : t('order.customer_direct'),
+                );
                 form.setFieldValue(
                     'total_calculate',
                     Number(
-                    response?.ordersDetails?.reduce(
-                        (acc: number, item: OrderDetailProps) =>
-                            acc +
-                            Number(item?.quantity) * Number(item?.price),
-                        0,
-                    ))?.toLocaleString(),
+                        response?.ordersDetails?.reduce(
+                            (acc: number, item: OrderDetailProps) =>
+                                acc +
+                                Number(item?.quantity) * Number(item?.price),
+                            0,
+                        ),
+                    )?.toLocaleString(),
                 );
                 setTextContent(response?.note);
             },
@@ -97,12 +158,12 @@ const OrderEditInfo = () => {
         form.setFieldValue(
             'total',
             Number(
-            (getByCode?.data?.ordersDetails?.reduce(
-                (acc: number, item: OrderDetailProps) =>
-                    acc + Number(item?.quantity) * Number(item?.price),
-                0,
-            ) + Number(transportFee)))?.toLocaleString()
-            ,
+                getByCode?.data?.ordersDetails?.reduce(
+                    (acc: number, item: OrderDetailProps) =>
+                        acc + Number(item?.quantity) * Number(item?.price),
+                    0,
+                ) + Number(transportFee),
+            )?.toLocaleString(),
         );
     }, [transportFee]);
 
@@ -126,7 +187,7 @@ const OrderEditInfo = () => {
 
     const handleBack = () => {
         window.history.back();
-    }
+    };
 
     return (
         <>
@@ -142,8 +203,6 @@ const OrderEditInfo = () => {
                                     onClick={() => handleBack()}
                                 />
                             </Tooltip>
-
-                           
                         </Flex>
                     </>
                 }
@@ -174,6 +233,20 @@ const OrderEditInfo = () => {
                                 >
                                     <Input
                                         placeholder={t('order.fields.customer')}
+                                        readOnly
+                                    />
+                                </FormItem>
+                                <FormItem
+                                    labelCol={{ span: 10 }}
+                                    name={'address'}
+                                    label={t('order.fields.delivery_address')}
+                                    rules={[...RULES_FORM.required]}
+                                >
+                                    <TextArea
+                                        placeholder={t(
+                                            'order.fields.delivery_address',
+                                        )}
+                                        rows={4}
                                         readOnly
                                     />
                                 </FormItem>
@@ -239,9 +312,7 @@ const OrderEditInfo = () => {
                                 >
                                     <Select
                                         options={ORDERS_STATUSES}
-                                        placeholder={t(
-                                            'order.fields.status',
-                                        )}
+                                        placeholder={t('order.fields.status')}
                                     />
                                 </FormItem>
                                 <FormItem
@@ -252,9 +323,7 @@ const OrderEditInfo = () => {
                                 >
                                     <Select
                                         options={ORDERS_PAYMENTS}
-                                        placeholder={t(
-                                            'order.fields.payment',
-                                        )}
+                                        placeholder={t('order.fields.payment')}
                                     />
                                 </FormItem>
                                 <FormItem
@@ -293,9 +362,7 @@ const OrderEditInfo = () => {
                                 loading={getByCode?.isLoading}
                                 itemLayout="horizontal"
                                 dataSource={getByCode?.data?.ordersDetails}
-                                renderItem={(
-                                    orderDetail: OrderDetailProps,
-                                ) => (
+                                renderItem={(orderDetail: OrderDetailProps) => (
                                     <List.Item key={orderDetail?._id}>
                                         <List.Item.Meta
                                             title={

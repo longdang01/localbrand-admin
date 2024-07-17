@@ -49,6 +49,7 @@ const EditProductModal = ({ id, orderDetail }: Props) => {
         id: id || '',
         config: {
             onSuccess: (response) => {
+                
                 form.setFieldsValue({
                     ...response,
                     ...orderDetail,
