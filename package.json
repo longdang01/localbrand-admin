@@ -11,7 +11,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.2.6",
+    "@ant-design/icons": "^5.3.7",
     "@ant-design/plots": "1.2.5",
     "antd": "^5.11.1",
     "axios": "^1.6.2",
@@ -22,6 +22,7 @@
     "framer-motion": "^11.1.0",
     "i18next": "^23.11.1",
     "i18next-browser-languagedetector": "^7.2.0",
+    "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "nearest-color": "^0.4.4",
     "normalize.css": "^8.0.1",

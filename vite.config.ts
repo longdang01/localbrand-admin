@@ -18,13 +18,13 @@ export default defineConfig({
         },
     },
     server: {
-        port: 4201,
-        proxy: {
-            '/api': {
-                target: 'http://0.0.0.0:5100', 
-                changeOrigin: true,
-                secure: false,
-            },  
-        },
+        // port: 4201,
+        // proxy: {
+        //     '/api': {
+        //         target: 'http://0.0.0.0:5100', 
+        //         changeOrigin: true,
+        //         secure: false,
+        //     },  
+        // },
     },
 });
